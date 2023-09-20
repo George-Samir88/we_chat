@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'features/home/presentation/home_view.dart';
+import 'package:we_chat/features/auth/login/presentation/login_view.dart';
 
 void main() {
   runApp(const MyApp());
@@ -29,7 +28,7 @@ class MyApp extends StatelessWidget {
               fontWeight: FontWeight.normal),
         ),
       ),
-      home: HomeView(),
+      home: LoginView(),
     );
   }
 }
