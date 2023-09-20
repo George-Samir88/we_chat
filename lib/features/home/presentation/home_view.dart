@@ -26,6 +26,16 @@ class _HomeViewState extends State<HomeView> {
           ),
         ],
       ),
+      floatingActionButton: Padding(
+        padding:
+            EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.01),
+        child: FloatingActionButton(
+          onPressed: () {},
+          child: Icon(
+            Icons.add_comment_rounded,
+          ),
+        ),
+      ),
     );
   }
 }
