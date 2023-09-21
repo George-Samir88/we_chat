@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:we_chat/features/auth/login/presentation/login_view.dart';
+import 'package:firebase_core/firebase_core.dart';
+
+import 'firebase_options.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  _initializeFirebase();
   runApp(const MyApp());
 }
 
@@ -31,4 +36,10 @@ class MyApp extends StatelessWidget {
       home: LoginView(),
     );
   }
+}
+
+_initializeFirebase() async {
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 }
