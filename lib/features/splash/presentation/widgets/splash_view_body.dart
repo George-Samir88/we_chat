@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:we_chat/features/home/presentation/home_view.dart';
 
 import '../../../../core/global_var.dart';
@@ -16,6 +17,15 @@ class _SplashViewBodyState extends State<SplashViewBody> {
     Future.delayed(
       Duration(milliseconds: 1500),
       () {
+        //exit full screen mode
+        SystemChrome.setEnabledSystemUIMode(
+          SystemUiMode.edgeToEdge,
+        );
+        SystemChrome.setSystemUIOverlayStyle(
+          SystemUiOverlayStyle(
+            statusBarColor: Colors.transparent,
+          ),
+        );
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
