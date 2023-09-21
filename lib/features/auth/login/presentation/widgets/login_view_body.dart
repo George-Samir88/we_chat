@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:we_chat/core/global_var.dart';
+import 'package:we_chat/core/widgets/custom_elevated_button.dart';
 
 class LoginViewBody extends StatelessWidget {
   const LoginViewBody({super.key});
@@ -19,32 +20,12 @@ class LoginViewBody extends StatelessWidget {
           left: screenSize.width * 0.08,
           right: screenSize.width * 0.08,
           height: screenSize.height * 0.06,
-          child: ElevatedButton.icon(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Color.fromARGB(255, 223, 255, 187),
-              elevation: 1,
-              shape: StadiumBorder(),
-            ),
-            onPressed: () {},
-            icon: Image.asset('assets/images/google.png',
-                height: screenSize.height * 0.03,
-                ),
-            label: RichText(
-              text: TextSpan(
-                  style: TextStyle(fontSize: 20.0, color: Colors.black),
-                  children: [
-                    TextSpan(
-                      text: 'Sign In with ',
-                    ),
-                    TextSpan(
-                      text: 'Google',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ]),
-            ),
+          child: CustomElevatedButton(
+            backgroundColor: Color.fromARGB(255, 223, 255, 187),
+            image: 'assets/images/google.png',
+            firstText: 'Sign In with ',
+            secondText: 'Google',
+            textColor: Colors.black,
           ),
         ),
       ],
