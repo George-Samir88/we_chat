@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:we_chat/features/auth/login/presentation/login_view.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:we_chat/features/splash/presentation/splash_view.dart';
 
 import 'firebase_options.dart';
 
@@ -20,6 +20,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'We Chat',
       theme: ThemeData(
+        fontFamily: 'Poppins',
         appBarTheme: AppBarTheme(
           backgroundColor: Colors.white,
           centerTitle: true,
@@ -33,7 +34,7 @@ class MyApp extends StatelessWidget {
               fontWeight: FontWeight.normal),
         ),
       ),
-      home: LoginView(),
+      home: SplashView(),
     );
   }
 }
