@@ -3,19 +3,22 @@ import 'package:flutter/material.dart';
 import '../global_var.dart';
 
 class CustomElevatedButton extends StatelessWidget {
-  const CustomElevatedButton(
-      {super.key,
-      required this.backgroundColor,
-      required this.image,
-      required this.firstText,
-      this.secondText = '',
-      this.textColor = Colors.black});
+  const CustomElevatedButton({
+    super.key,
+    required this.backgroundColor,
+    required this.image,
+    required this.firstText,
+    this.secondText = '',
+    this.textColor = Colors.black,
+    this.onPressed,
+  });
 
   final Color backgroundColor;
   final String image;
   final String firstText;
   final String? secondText;
   final Color? textColor;
+  final void Function()? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +28,7 @@ class CustomElevatedButton extends StatelessWidget {
         elevation: 1,
         shape: StadiumBorder(),
       ),
-      onPressed: () {},
+      onPressed: onPressed,
       icon: Image.asset(
         image,
         height: screenSize.height * 0.03,
