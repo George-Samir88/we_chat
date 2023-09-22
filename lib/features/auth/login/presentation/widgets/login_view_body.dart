@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:we_chat/core/global_var.dart';
+import 'package:we_chat/core/widgets/custom_alert_message.dart';
 import 'package:we_chat/core/widgets/custom_elevated_button.dart';
+import 'package:we_chat/features/auth/login/manager/cubit/auth_cubit.dart';
+import 'package:we_chat/features/auth/login/manager/cubit/auth_state.dart';
 import 'package:we_chat/features/home/presentation/home_view.dart';
 
 class LoginViewBody extends StatefulWidget {
@@ -35,26 +39,43 @@ class _LoginViewBodyState extends State<LoginViewBody> {
           width: screenSize.width * 0.5,
           child: Image.asset('assets/images/message.png'),
         ),
-        Positioned(
-          bottom: screenSize.height * 0.15,
-          left: screenSize.width * 0.08,
-          right: screenSize.width * 0.08,
-          height: screenSize.height * 0.06,
-          child: CustomElevatedButton(
-            onPressed: () {
+        BlocConsumer<AuthCubit, AuthState>(
+          listener: (context, state) {
+            if (state is AuthErrorState) {
+              customAlertMessage(
+                  message: state.error.toString(), backgroundColor: Colors.red);
+            } else if (state is AuthSuccessState) {
+              customAlertMessage(
+                  message: 'Signed In Successfully',
+                  backgroundColor: Colors.green);
               Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => HomeView(),
+                  context, MaterialPageRoute(builder: (context) => HomeView()));
+            }
+          },
+          builder: (context, state) {
+            if (state is AuthLoadingState) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            } else {
+              return Positioned(
+                bottom: screenSize.height * 0.15,
+                left: screenSize.width * 0.08,
+                right: screenSize.width * 0.08,
+                height: screenSize.height * 0.06,
+                child: CustomElevatedButton(
+                  onPressed: () {
+                    BlocProvider.of<AuthCubit>(context).signInWithGoogle();
+                  },
+                  backgroundColor: Color.fromARGB(255, 223, 255, 187),
+                  image: 'assets/images/google.png',
+                  firstText: 'Sign In with ',
+                  secondText: 'Google',
+                  textColor: Colors.black,
                 ),
               );
-            },
-            backgroundColor: Color.fromARGB(255, 223, 255, 187),
-            image: 'assets/images/google.png',
-            firstText: 'Sign In with ',
-            secondText: 'Google',
-            textColor: Colors.black,
-          ),
+            }
+          },
         ),
       ],
     );
