@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:we_chat/features/home/presentation/home_view.dart';
-
 import '../../../../core/global_var.dart';
+import '../../../auth/login/presentation/login_view.dart';
 
 class SplashViewBody extends StatefulWidget {
   const SplashViewBody({super.key});
@@ -29,7 +28,7 @@ class _SplashViewBodyState extends State<SplashViewBody> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => HomeView(),
+            builder: (context) => LoginView(),
           ),
         );
       },
