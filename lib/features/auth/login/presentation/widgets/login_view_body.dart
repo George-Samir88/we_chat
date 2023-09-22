@@ -54,8 +54,14 @@ class _LoginViewBodyState extends State<LoginViewBody> {
           },
           builder: (context, state) {
             if (state is AuthLoadingState) {
-              return Center(
-                child: CircularProgressIndicator(),
+              return Positioned(
+                bottom: screenSize.height * 0.15,
+                left: screenSize.width * 0.08,
+                right: screenSize.width * 0.08,
+                height: screenSize.height * 0.06,
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
               );
             } else {
               return Positioned(
