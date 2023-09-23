@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:we_chat/core/widgets/custom_alert_message.dart';
 import 'package:we_chat/features/auth/login/presentation/login_view.dart';
+import 'package:we_chat/features/home/presentation/widgets/home_view_body.dart';
 
 import '../../../core/cache_token.dart';
 
@@ -50,6 +51,7 @@ class _HomeViewState extends State<HomeView> {
           ),
         ),
       ),
+      body: HomeViewBody(),
     );
   }
 }
