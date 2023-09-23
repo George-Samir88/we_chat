@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:we_chat/core/global_var.dart';
@@ -18,7 +20,7 @@ class HomeViewBody extends StatelessWidget {
             for (int i = 0; i < snapshot.data!.docs.length; i++) {
               Map<String, dynamic> data =
                   snapshot.data!.docs[i].data() as Map<String, dynamic>;
-              users.add(User(Name: data['name'], about: data['about']));
+              print(jsonEncode(data));
             }
             return Padding(
               padding: EdgeInsets.only(
@@ -28,7 +30,7 @@ class HomeViewBody extends StatelessWidget {
                   physics: BouncingScrollPhysics(),
                   itemBuilder: (context, index) {
                     return ChatUserCard(
-                      name: users[index].Name,
+                      name: users[index].name,
                     );
                   },
                   itemCount: snapshot.data!.docs.length),
