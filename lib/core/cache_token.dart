@@ -1,12 +1,11 @@
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:we_chat/core/service_locator.dart';
 
 void saveDataIntoSharedPreferences(
     {required String key, required String token}) async {
-  final SharedPreferences prefs = await SharedPreferences.getInstance();
-  await prefs.setString(key, token);
+  await sharedPreferencesGetIt.get<SharedPreferences>().setString(key, token);
 }
 
 void removeDataFromSharedPreferences({required String key}) async {
-  final SharedPreferences prefs = await SharedPreferences.getInstance();
-  await prefs.remove(key);
+  await sharedPreferencesGetIt.get<SharedPreferences>().remove(key);
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:we_chat/core/service_locator.dart';
 import 'package:we_chat/features/auth/login/manager/auth_repo/auth_repo_imp.dart';
 import 'package:we_chat/features/auth/login/manager/cubit/auth_cubit.dart';
 import 'package:we_chat/features/splash/presentation/splash_view.dart';
@@ -18,6 +19,7 @@ void main() {
           [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
       .then((value) {
     _initializeFirebase();
+    setupSharedPreferencesSingleton();
     runApp(const MyApp());
   });
 }
