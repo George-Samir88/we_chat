@@ -1,5 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:we_chat/core/widgets/custom_alert_message.dart';
+import 'package:we_chat/features/auth/login/presentation/login_view.dart';
+
+import '../../../core/cache_token.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -30,7 +35,16 @@ class _HomeViewState extends State<HomeView> {
         padding:
             EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.01),
         child: FloatingActionButton(
-          onPressed: () {},
+          onPressed: () async {
+            await FirebaseAuth.instance.signOut();
+            // Remove data for the 'token' key.
+            removeDataFromSharedPreferences(key: 'token');
+            customAlertMessage(
+                message: 'Signed out successfully',
+                backgroundColor: Colors.green);
+            Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => LoginView()));
+          },
           child: Icon(
             Icons.add_comment_rounded,
           ),
