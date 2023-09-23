@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:we_chat/core/global_var.dart';
 
 class ChatUserCard extends StatelessWidget {
-  const ChatUserCard({super.key});
+  const ChatUserCard({super.key, required this.name});
+
+  final String name;
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +19,7 @@ class ChatUserCard extends StatelessWidget {
       child: GestureDetector(
         onTap: () {},
         child: ListTile(
-          title: Text('Demo User', style: TextStyle(fontSize: 18)),
+          title: Text(name, style: TextStyle(fontSize: 18)),
           subtitle: Text(
             'Hello im george how are you',
             overflow: TextOverflow.ellipsis,
