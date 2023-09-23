@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:we_chat/core/global_var.dart';
@@ -15,28 +13,69 @@ class HomeViewBody extends StatelessWidget {
     return StreamBuilder<QuerySnapshot>(
         stream: firestore.collection('users').snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (snapshot.hasData) {
-            List<User> users = [];
-            for (int i = 0; i < snapshot.data!.docs.length; i++) {
-              Map<String, dynamic> data =
-                  snapshot.data!.docs[i].data() as Map<String, dynamic>;
-              print(jsonEncode(data));
-            }
-            return Padding(
-              padding: EdgeInsets.only(
-                  top: screenSize.height * 0.008,
-                  bottom: screenSize.height * 0.008),
-              child: ListView.builder(
-                  physics: BouncingScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    return ChatUserCard(
-                      name: users[index].name,
-                    );
-                  },
-                  itemCount: snapshot.data!.docs.length),
-            );
-          } else
-            return Text('no data');
+          switch (snapshot.connectionState) {
+            case ConnectionState.none:
+            case ConnectionState.waiting:
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+
+            case ConnectionState.active:
+            case ConnectionState.done:
+              List<User> users = [];
+              if (snapshot.hasData) {
+                for (int i = 0; i < snapshot.data!.docs.length; i++) {
+                  users = snapshot.data!.docs
+                      .map((e) =>
+                          User.fromJson(e.data() as Map<String, dynamic>))
+                      .toList();
+                }
+                if (users.isNotEmpty) {
+                  return Padding(
+                    padding: EdgeInsets.only(
+                        top: screenSize.height * 0.008,
+                        bottom: screenSize.height * 0.008),
+                    child: ListView.builder(
+                        physics: BouncingScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          return ChatUserCard(
+                            user: users[index],
+                          );
+                        },
+                        itemCount: snapshot.data!.docs.length),
+                  );
+                } else {
+                  return Center(
+                    child: Container(
+                      padding: EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                          color: Colors.blue.shade100,
+                          borderRadius: BorderRadius.circular(24)),
+                      child: Text(
+                        'No Connections Found!',
+                        style: TextStyle(
+                          fontSize: 22.0,
+                        ),
+                      ),
+                    ),
+                  );
+                }
+              } else
+                return Center(
+                  child: Container(
+                    padding: EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                        color: Colors.blue.shade100,
+                        borderRadius: BorderRadius.circular(24)),
+                    child: Text(
+                      'No information',
+                      style: TextStyle(
+                        fontSize: 22.0,
+                      ),
+                    ),
+                  ),
+                );
+          }
         });
   }
 }

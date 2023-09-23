@@ -22,15 +22,15 @@ class User {
   late final String email;
 
   User.fromJson(Map<String, dynamic> json) {
-    image = json['image'];
-    name = json['name'];
-    about = json['about'];
-    createdAt = json['created_at'];
-    isOnline = json['is_online'];
-    id = json['id'];
-    lastActive = json['last_active'];
-    pushToken = json['push_token'];
-    email = json['email'];
+    image = json['image'] ?? '';
+    name = json['name'] ?? '';
+    about = json['about'] ?? '';
+    createdAt = json['created_at'] ?? '';
+    isOnline = json['is_online'] ?? false;
+    id = json['id'] ?? '';
+    lastActive = json['last_active'] ?? '';
+    pushToken = json['push_token'] ?? '';
+    email = json['email'] ?? '';
   }
 
   Map<String, dynamic> toJson() {

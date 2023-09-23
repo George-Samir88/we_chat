@@ -1,11 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:we_chat/core/global_var.dart';
+import 'package:we_chat/features/home/manager/models/user_model.dart';
 
 class ChatUserCard extends StatelessWidget {
-  const ChatUserCard({super.key, required this.name});
+  const ChatUserCard({super.key, required this.user});
 
-  final String name;
+  final User user;
 
   @override
   Widget build(BuildContext context) {
@@ -19,9 +20,9 @@ class ChatUserCard extends StatelessWidget {
       child: GestureDetector(
         onTap: () {},
         child: ListTile(
-          title: Text(name, style: TextStyle(fontSize: 18)),
+          title: Text(user.name, style: TextStyle(fontSize: 18)),
           subtitle: Text(
-            'Hello im george how are you',
+            user.about,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
               fontSize: 15,
