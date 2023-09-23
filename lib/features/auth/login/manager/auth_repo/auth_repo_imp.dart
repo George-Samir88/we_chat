@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -7,6 +9,8 @@ class AuthRepoImp implements AuthRepo {
   @override
   Future<Either<String, UserCredential>> signInWithGoogle() async {
     try {
+      //check internet connection
+      await InternetAddress.lookup('google.com');
       // Trigger the authentication flow
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
@@ -19,11 +23,13 @@ class AuthRepoImp implements AuthRepo {
         accessToken: googleAuth?.accessToken,
         idToken: googleAuth?.idToken,
       );
-
       // Once signed in, return the UserCredential
       return right(
           await FirebaseAuth.instance.signInWithCredential(credential));
     } catch (err) {
+      if (err.toString().contains('SocketException')) {
+        return left('Please check your internet connection');
+      }
       return left(err.toString());
     }
   }

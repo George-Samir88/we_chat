@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:we_chat/features/home/presentation/home_view.dart';
 import '../../../../core/global_var.dart';
 import '../../../auth/login/presentation/login_view.dart';
 
@@ -13,27 +15,29 @@ class SplashViewBody extends StatefulWidget {
 class _SplashViewBodyState extends State<SplashViewBody> {
   @override
   void initState() {
-    Future.delayed(
-      Duration(milliseconds: 1500),
-      () {
-        //exit full screen mode
-        SystemChrome.setEnabledSystemUIMode(
-          SystemUiMode.edgeToEdge,
-        );
-        SystemChrome.setSystemUIOverlayStyle(
-          SystemUiOverlayStyle(
-            statusBarColor: Colors.transparent,
-          ),
-        );
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => LoginView(),
-          ),
-        );
-      },
-    );
     super.initState();
+    _initialize();
+  }
+
+  Future<void> _initialize() async {
+    String? token = await getTokenFromCacheMemory();
+
+    await Future.delayed(Duration(milliseconds: 1500));
+
+    // Exit full-screen mode
+    exitFullScreenMode();
+
+    if (token != null) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HomeView()),
+      );
+    } else {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => LoginView()),
+      );
+    }
   }
 
   @override
@@ -61,5 +65,18 @@ class _SplashViewBodyState extends State<SplashViewBody> {
         ),
       ],
     );
+  }
+
+  void exitFullScreenMode() {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+    ));
+  }
+
+  Future<String?> getTokenFromCacheMemory() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? token = prefs.getString('token');
+    return token;
   }
 }
