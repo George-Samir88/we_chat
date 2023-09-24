@@ -12,9 +12,9 @@ class HomeCubit extends Cubit<HomeState> {
     try {
       firestore.collection('users').snapshots().listen((snapshot) {
         if (snapshot.docs.isNotEmpty) {
-          List<User> users = [];
+          List<ChatUser> users = [];
           users = snapshot.docs.map((e) {
-            return User.fromJson(e.data());
+            return ChatUser.fromJson(e.data());
           }).toList();
           emit(HomeGetUserSuccessState(users: users));
         } else {

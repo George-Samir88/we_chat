@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:we_chat/core/function/add_user_to_firestore.dart';
+import 'package:we_chat/core/function/check_user_existence.dart';
 import 'package:we_chat/core/global_var.dart';
 import 'package:we_chat/core/widgets/custom_alert_message.dart';
 import 'package:we_chat/core/widgets/custom_elevated_button.dart';
@@ -40,7 +42,7 @@ class _LoginViewBodyState extends State<LoginViewBody> {
           child: Image.asset('assets/images/message.png'),
         ),
         BlocConsumer<AuthCubit, AuthState>(
-          listener: (context, state) {
+          listener: (context, state) async {
             if (state is AuthErrorState) {
               customAlertMessage(
                   message: state.error.toString(), backgroundColor: Colors.red);
@@ -48,8 +50,15 @@ class _LoginViewBodyState extends State<LoginViewBody> {
               customAlertMessage(
                   message: 'Signed In Successfully',
                   backgroundColor: Colors.green);
-              Navigator.pushReplacement(
-                  context, MaterialPageRoute(builder: (context) => HomeView()));
+              if (await userExistenceChecker()) {
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => HomeView()));
+              } else {
+                await addUserToFireStore().then((value) {
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) => HomeView()));
+                });
+              }
             }
           },
           builder: (context, state) {

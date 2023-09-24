@@ -6,7 +6,7 @@ import 'package:we_chat/features/home/manager/models/user_model.dart';
 class ChatUserCard extends StatelessWidget {
   const ChatUserCard({super.key, required this.user});
 
-  final User user;
+  final ChatUser user;
 
   @override
   Widget build(BuildContext context) {

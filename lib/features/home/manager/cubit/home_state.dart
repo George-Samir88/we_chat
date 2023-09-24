@@ -8,7 +8,7 @@ abstract class HomeState {}
 class HomeInitial extends HomeState {}
 
 class HomeGetUserSuccessState extends HomeState {
-  final List<User> users;
+  final List<ChatUser> users;
 
   HomeGetUserSuccessState({required this.users});
 }

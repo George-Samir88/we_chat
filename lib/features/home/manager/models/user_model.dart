@@ -1,5 +1,5 @@
-class User {
-  User({
+class ChatUser {
+  ChatUser({
     required this.image,
     required this.name,
     required this.about,
@@ -21,7 +21,7 @@ class User {
   late final String pushToken;
   late final String email;
 
-  User.fromJson(Map<String, dynamic> json) {
+  ChatUser.fromJson(Map<String, dynamic> json) {
     image = json['image'] ?? '';
     name = json['name'] ?? '';
     about = json['about'] ?? '';

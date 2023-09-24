@@ -3,7 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:we_chat/core/custom_bloc_observer.dart';
-import 'package:we_chat/core/service_locator.dart';
+import 'package:we_chat/core/function/service_locator.dart';
 import 'package:we_chat/features/home/manager/cubit/home_cubit.dart';
 import 'package:we_chat/features/splash/presentation/splash_view.dart';
 

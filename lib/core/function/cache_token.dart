@@ -1,5 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:we_chat/core/service_locator.dart';
+import 'package:we_chat/core/function/service_locator.dart';
 
 void saveDataIntoSharedPreferences(
     {required String key, required String token}) async {
