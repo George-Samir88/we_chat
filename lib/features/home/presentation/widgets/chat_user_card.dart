@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:we_chat/core/global_var.dart';
@@ -29,14 +30,27 @@ class ChatUserCard extends StatelessWidget {
             ),
             maxLines: 1,
           ),
-          leading: CircleAvatar(
-            child: Icon(CupertinoIcons.person),
-          ),
-          trailing: Text(
-            '12:00 pm',
-            style: TextStyle(
-              color: Colors.black,
+          leading: ClipRRect(
+            borderRadius: BorderRadius.circular(screenSize.width * 0.08),
+            child: CachedNetworkImage(
+              imageUrl: user.image,
+              progressIndicatorBuilder: (context, url, downloadProgress) =>
+                  CircularProgressIndicator(value: downloadProgress.progress),
+              errorWidget: (context, url, error) => Icon(CupertinoIcons.person),
             ),
+          ),
+          // trailing: Text(
+          //   '12:00 pm',
+          //   style: TextStyle(
+          //     color: Colors.black,
+          //   ),
+          // ),
+          trailing: Container(
+            height: screenSize.height * 0.02,
+            width: screenSize.height * 0.02,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(screenSize.width * 0.05),
+                color: Colors.lightGreenAccent),
           ),
         ),
       ),
