@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:we_chat/core/widgets/custom_alert_message.dart';
 import 'package:we_chat/features/auth/login/presentation/login_view.dart';
 import 'package:we_chat/features/home/presentation/widgets/home_view_body.dart';
@@ -38,6 +39,7 @@ class _HomeViewState extends State<HomeView> {
         child: FloatingActionButton(
           onPressed: () async {
             await FirebaseAuth.instance.signOut();
+            await GoogleSignIn().signOut();
             // Remove data for the 'token' key.
             removeDataFromSharedPreferences(key: 'token');
             customAlertMessage(
