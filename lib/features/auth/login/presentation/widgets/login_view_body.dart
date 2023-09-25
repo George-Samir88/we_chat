@@ -4,7 +4,7 @@ import 'package:we_chat/core/function/add_user_to_firestore.dart';
 import 'package:we_chat/core/function/check_user_existence.dart';
 import 'package:we_chat/core/global_var.dart';
 import 'package:we_chat/core/widgets/custom_alert_message.dart';
-import 'package:we_chat/core/widgets/custom_elevated_button.dart';
+import 'package:we_chat/core/widgets/custom_elevated_button_with_image.dart';
 import 'package:we_chat/features/auth/login/manager/cubit/auth_cubit.dart';
 import 'package:we_chat/features/auth/login/manager/cubit/auth_state.dart';
 import 'package:we_chat/features/home/presentation/home_view.dart';
@@ -78,7 +78,7 @@ class _LoginViewBodyState extends State<LoginViewBody> {
                 left: screenSize.width * 0.08,
                 right: screenSize.width * 0.08,
                 height: screenSize.height * 0.06,
-                child: CustomElevatedButton(
+                child: CustomElevatedButtonWithImage(
                   onPressed: () {
                     BlocProvider.of<AuthCubit>(context).signInWithGoogle();
                   },

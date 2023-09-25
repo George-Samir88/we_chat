@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../global_var.dart';
 
-class CustomElevatedButton extends StatelessWidget {
-  const CustomElevatedButton({
+class CustomElevatedButtonWithImage extends StatelessWidget {
+  const CustomElevatedButtonWithImage({
     super.key,
     required this.backgroundColor,
     required this.image,
