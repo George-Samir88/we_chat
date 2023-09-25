@@ -22,12 +22,12 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
+  void initState() {
     if (!isFetchingChatUsers) {
       BlocProvider.of<HomeCubit>(context).getChatUsers();
     }
     isFetchingChatUsers = false;
+    super.initState();
   }
 
   @override
@@ -58,8 +58,7 @@ class _HomeViewState extends State<HomeView> {
         ],
       ),
       floatingActionButton: Padding(
-        padding:
-            EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.01),
+        padding: EdgeInsets.only(bottom: screenSize.height * 0.01),
         child: FloatingActionButton(
           onPressed: () async {
             await FirebaseAuth.instance.signOut();
