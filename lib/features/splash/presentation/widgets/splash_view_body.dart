@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:we_chat/features/home/presentation/home_view.dart';
+import '../../../../core/function/get_data_from_shared_pref.dart';
 import '../../../../core/global_var.dart';
 import '../../../auth/login/presentation/login_view.dart';
 
@@ -20,7 +20,7 @@ class _SplashViewBodyState extends State<SplashViewBody> {
   }
 
   Future<void> _initialize() async {
-    String? token = await getTokenFromCacheMemory();
+    String? token = await getTokenFromCacheMemory(key: 'token');
 
     await Future.delayed(Duration(milliseconds: 1500));
 
@@ -72,11 +72,5 @@ class _SplashViewBodyState extends State<SplashViewBody> {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
     ));
-  }
-
-  Future<String?> getTokenFromCacheMemory() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String? token = prefs.getString('token');
-    return token;
   }
 }

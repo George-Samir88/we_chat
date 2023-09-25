@@ -15,7 +15,8 @@ class AuthCubit extends Cubit<AuthState> {
       emit(AuthErrorState(error: failure.toString()));
     }, (userCredential) {
       //save token into shared Preferences
-      saveDataIntoSharedPreferences(token: userCredential.user!.uid, key: 'token');
+      saveDataIntoSharedPreferences(
+          token: userCredential.user!.uid, key: 'token');
       emit(AuthSuccessState(userCredential: userCredential));
     });
   }
