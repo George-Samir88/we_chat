@@ -22,16 +22,38 @@ class UserProfileBody extends StatelessWidget {
             height: screenSize.height * 0.01,
             width: screenSize.width,
           ),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(screenSize.height * 0.15),
-            child: CachedNetworkImage(
-              height: screenSize.height * 0.3,
-              imageUrl: chatUser.image,
-              fit: BoxFit.fill,
-              progressIndicatorBuilder: (context, url, downloadProgress) =>
-                  CircularProgressIndicator(value: downloadProgress.progress),
-              errorWidget: (context, url, error) => Icon(CupertinoIcons.person),
-            ),
+          Stack(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(screenSize.height * 0.15),
+                child: CachedNetworkImage(
+                  height: screenSize.height * 0.3,
+                  imageUrl: chatUser.image,
+                  fit: BoxFit.fill,
+                  progressIndicatorBuilder: (context, url, downloadProgress) =>
+                      CircularProgressIndicator(
+                          value: downloadProgress.progress),
+                  errorWidget: (context, url, error) =>
+                      Icon(CupertinoIcons.person),
+                ),
+              ),
+              Positioned(
+                bottom: 0,
+                right: 0,
+                child: MaterialButton(
+                  onPressed: () {},
+                  color: Colors.white,
+                  shape: CircleBorder(),
+                  height: screenSize.height * 0.05,
+                  elevation: 1,
+                  child: Icon(
+                    Icons.edit,
+                    color: Colors.blue,
+                    size: screenSize.height * 0.035,
+                  ),
+                ),
+              ),
+            ],
           ),
           SizedBox(
             height: screenSize.height * 0.03,
@@ -66,8 +88,8 @@ class UserProfileBody extends StatelessWidget {
           ),
           CustomElevatedButtonWithIcon(
               backgroundColor: Colors.blue,
-              icon: Icons.edit,
-              onPressed: (){},
+              icon: Icons.logout_outlined,
+              onPressed: () {},
               textColor: Colors.white,
               firstText: 'Edit'),
         ],

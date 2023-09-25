@@ -25,7 +25,7 @@ class CustomElevatedButtonWithIcon extends StatelessWidget {
     return ElevatedButton.icon(
       style: ElevatedButton.styleFrom(
         backgroundColor: backgroundColor,
-        minimumSize: Size(screenSize.width, screenSize.height * 0.05),
+        minimumSize: Size(screenSize.width *0.5, screenSize.height * 0.06),
         elevation: 1,
         shape: StadiumBorder(),
       ),
