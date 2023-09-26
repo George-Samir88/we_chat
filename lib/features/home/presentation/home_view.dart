@@ -1,12 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:we_chat/core/function/get_self_info.dart';
 import 'package:we_chat/core/global_var.dart';
 
 import 'package:we_chat/features/home/presentation/widgets/home_view_body.dart';
 
 import '../../user_profile/presentation/user_profile.dart';
-import '../manager/cubit/home_cubit.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -17,12 +16,9 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   @override
-  void initState() {
-    if (!isFetchingChatUsers) {
-      BlocProvider.of<HomeCubit>(context).getChatUsers();
-    }
-    isFetchingChatUsers = false;
+  initState() {
     super.initState();
+    getSelfInfo();
   }
 
   @override
@@ -42,8 +38,7 @@ class _HomeViewState extends State<HomeView> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => UserProfile(
-                    chatUser:
-                        BlocProvider.of<HomeCubit>(context).currentChatUser,
+                    chatUser: me,
                   ),
                 ),
               );
