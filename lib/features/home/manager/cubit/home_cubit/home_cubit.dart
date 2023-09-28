@@ -7,6 +7,8 @@ import 'home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
   HomeCubit() : super(HomeInitial());
+  List<ChatUser> chatUserSearchList = [];
+  List<ChatUser> allChatUsers = [];
 
   void getChatUsers() {
     emit(HomeGetUserLoadingState());
@@ -21,6 +23,7 @@ class HomeCubit extends Cubit<HomeState> {
           users = snapshot.docs.map((e) {
             return ChatUser.fromJson(e.data());
           }).toList();
+          allChatUsers = users;
           emit(HomeGetUserSuccessState(users: users));
         } else {
           emit(HomeGetUserSuccessState(users: []));
@@ -28,6 +31,22 @@ class HomeCubit extends Cubit<HomeState> {
       });
     } catch (err) {
       emit(HomeGetUserErrorState(error: err.toString()));
+    }
+  }
+
+  void searchAboutUser({required String searchItem}) {
+    emit(HomeSearchLoadingState());
+    chatUserSearchList.clear();
+    try {
+      for (var i in allChatUsers) {
+        if (i.name.toLowerCase().contains(searchItem.toLowerCase()) ||
+            i.email.toLowerCase().contains(searchItem.toLowerCase())) {
+          chatUserSearchList.add(i);
+        }
+        emit(HomeSearchSuccessState(chatUserSearchList: chatUserSearchList));
+      }
+    } catch (err) {
+      emit(HomeSearchErrorState(error: err.toString()));
     }
   }
 }

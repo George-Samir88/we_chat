@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../models/user_model.dart';
+import '../../models/user_model.dart';
 
 @immutable
 abstract class HomeState {}
@@ -20,3 +20,17 @@ class HomeGetUserErrorState extends HomeState {
 }
 
 class HomeGetUserLoadingState extends HomeState {}
+
+class HomeSearchSuccessState extends HomeState {
+  final List<ChatUser> chatUserSearchList;
+
+  HomeSearchSuccessState({required this.chatUserSearchList});
+}
+
+class HomeSearchLoadingState extends HomeState {}
+
+class HomeSearchErrorState extends HomeState {
+  final String error;
+
+  HomeSearchErrorState({required this.error});
+}

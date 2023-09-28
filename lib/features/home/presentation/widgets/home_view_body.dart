@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:we_chat/features/home/manager/cubit/home_cubit.dart';
-import 'package:we_chat/features/home/manager/cubit/home_state.dart';
+import 'package:we_chat/features/home/manager/cubit/home_cubit/home_cubit.dart';
+import 'package:we_chat/features/home/manager/cubit/home_cubit/home_state.dart';
 
 import 'chat_users_list_view.dart';
 import 'custom_error_widget.dart';
@@ -23,7 +23,19 @@ class HomeViewBody extends StatelessWidget {
           } else {
             return NoUsersWidget();
           }
+        } else if (state is HomeSearchSuccessState) {
+          if (state.chatUserSearchList.isNotEmpty) {
+            return ChatUsersListView(
+              users: state.chatUserSearchList,
+            );
+          } else {
+            return NoUsersWidget();
+          }
         } else if (state is HomeGetUserErrorState) {
+          return CustomErrorWidget(
+            error: state.error,
+          );
+        } else if (state is HomeSearchErrorState) {
           return CustomErrorWidget(
             error: state.error,
           );

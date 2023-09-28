@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:we_chat/core/function/get_self_info.dart';
 import 'package:we_chat/core/global_var.dart';
+import 'package:we_chat/features/home/manager/cubit/home_cubit/home_cubit.dart';
 
 import 'package:we_chat/features/home/presentation/widgets/home_view_body.dart';
 
@@ -20,17 +22,41 @@ class _HomeViewState extends State<HomeView> {
     super.initState();
     getSelfInfo();
   }
-
+bool isSearching = false;
   @override
   Widget build(BuildContext context) {
+    var blocHelper = BlocProvider.of<HomeCubit>(context);
     return Scaffold(
       appBar: AppBar(
         leading: Icon(CupertinoIcons.home),
-        title: Text('We Chat'),
+        title: isSearching
+            ? TextField(
+                autofocus: true,
+                style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 16.0,
+                ),
+                decoration: InputDecoration(
+                  hintText: 'Email, Name,....',
+                  hintStyle: TextStyle(color: Colors.grey),
+                  border: InputBorder.none,
+                ),
+                onChanged: (value) {
+                  blocHelper.searchAboutUser(searchItem: value);
+                },
+              )
+            : Text('We Chat'),
         actions: [
           IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.search),
+            onPressed: () {
+              isSearching  =!isSearching;
+              setState(() {
+
+              });
+            },
+            icon: isSearching
+                ? Icon(CupertinoIcons.clear_circled_solid)
+                : Icon(Icons.search),
           ),
           IconButton(
             onPressed: () {
