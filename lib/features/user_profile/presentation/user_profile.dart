@@ -49,7 +49,7 @@ class UserProfile extends StatelessWidget {
               style: TextStyle(fontSize: 16.0),
             ),
             icon: Icon(
-              Icons.add_comment_rounded,
+              Icons.logout_outlined,
             ),
           ),
         ),

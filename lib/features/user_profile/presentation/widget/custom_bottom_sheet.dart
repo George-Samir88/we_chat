@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import '../../../../core/global_var.dart';
 import '../../../../core/widgets/general_elevated_button.dart';
 
-void showBottomSheetFun({required context}) {
+void showBottomSheetFun(
+    {required context,
+    void Function()? onGalleryButtonPressed,
+    void Function()? onCameraButtonPressed}) {
   showModalBottomSheet(
     context: context,
     shape: RoundedRectangleBorder(
@@ -38,11 +41,11 @@ void showBottomSheetFun({required context}) {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               GeneralElevatedButton(
-                onPressed: () {},
+                onPressed: onCameraButtonPressed,
                 imagePath: 'assets/images/add_photo.png',
               ),
               GeneralElevatedButton(
-                onPressed: () {},
+                onPressed: onGalleryButtonPressed,
                 imagePath: 'assets/images/gallery.png',
               ),
             ],

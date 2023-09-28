@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:we_chat/core/function/update_user.dart';
 import 'package:we_chat/core/widgets/custom_alert_message.dart';
 import 'package:we_chat/core/widgets/custom_elevated_button_with_icon.dart';
@@ -9,10 +12,17 @@ import '../../../../core/global_var.dart';
 import '../../../../core/widgets/custom_text_form_field.dart';
 import 'custom_bottom_sheet.dart';
 
-class UserProfileBody extends StatelessWidget {
+class UserProfileBody extends StatefulWidget {
   const UserProfileBody({super.key});
 
   static var formKey = GlobalKey<FormState>();
+
+  @override
+  State<UserProfileBody> createState() => _UserProfileBodyState();
+}
+
+class _UserProfileBodyState extends State<UserProfileBody> {
+  String? imagePicked;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +30,7 @@ class UserProfileBody extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: screenSize.width * 0.04),
       child: SingleChildScrollView(
         child: Form(
-          key: formKey,
+          key: UserProfileBody.formKey,
           child: Column(
             children: [
               SizedBox(
@@ -29,28 +39,62 @@ class UserProfileBody extends StatelessWidget {
               ),
               Stack(
                 children: [
-                  ClipRRect(
-                    borderRadius:
-                        BorderRadius.circular(screenSize.height * 0.15),
-                    child: CachedNetworkImage(
-                      height: screenSize.height * 0.3,
-                      imageUrl: me.image,
-                      fit: BoxFit.fill,
-                      progressIndicatorBuilder:
-                          (context, url, downloadProgress) => Center(
-                        child: CircularProgressIndicator(
-                            value: downloadProgress.progress),
-                      ),
-                      errorWidget: (context, url, error) =>
-                          Icon(CupertinoIcons.person),
-                    ),
-                  ),
+                  imagePicked == null
+                      ? ClipRRect(
+                          borderRadius:
+                              BorderRadius.circular(screenSize.height * 0.15),
+                          child: CachedNetworkImage(
+                            height: screenSize.height * 0.3,
+                            width: screenSize.height * 0.3,
+                            imageUrl: me.image,
+                            fit: BoxFit.fill,
+                            progressIndicatorBuilder:
+                                (context, url, downloadProgress) => Center(
+                              child: CircularProgressIndicator(
+                                  value: downloadProgress.progress),
+                            ),
+                            errorWidget: (context, url, error) =>
+                                Icon(CupertinoIcons.person),
+                          ),
+                        )
+                      : ClipRRect(
+                          borderRadius:
+                              BorderRadius.circular(screenSize.height * 0.15),
+                          child: Image.file(
+                            File(imagePicked!),
+                            height: screenSize.height * 0.3,
+                            width: screenSize.height * 0.3,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
                   Positioned(
                     bottom: 0,
                     right: 0,
                     child: MaterialButton(
                       onPressed: () {
                         showBottomSheetFun(
+                          onCameraButtonPressed: () async {
+                            final ImagePicker picker = ImagePicker();
+                            final XFile? image = await picker.pickImage(
+                                source: ImageSource.camera);
+                            if (image != null) {
+                              setState(() {
+                                imagePicked = image.path;
+                              });
+                              Navigator.pop(context);
+                            }
+                          },
+                          onGalleryButtonPressed: () async {
+                            final ImagePicker picker = ImagePicker();
+                            final XFile? image = await picker.pickImage(
+                                source: ImageSource.gallery);
+                            if (image != null) {
+                              setState(() {
+                                imagePicked = image.path;
+                              });
+                              Navigator.pop(context);
+                            }
+                          },
                           context: context,
                         );
                       },
@@ -118,10 +162,10 @@ class UserProfileBody extends StatelessWidget {
               ),
               CustomElevatedButtonWithIcon(
                   backgroundColor: Colors.blue,
-                  icon: Icons.logout_outlined,
+                  icon: Icons.add_comment_rounded,
                   onPressed: () {
-                    if (formKey.currentState!.validate()) {
-                      formKey.currentState!.save();
+                    if (UserProfileBody.formKey.currentState!.validate()) {
+                      UserProfileBody.formKey.currentState!.save();
                       updateUserprofile().then((value) {
                         customAlertMessage(
                             message: 'Updated Successfully',
@@ -137,5 +181,4 @@ class UserProfileBody extends StatelessWidget {
       ),
     );
   }
-
 }
