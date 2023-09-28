@@ -7,6 +7,7 @@ import 'package:we_chat/core/widgets/custom_elevated_button_with_icon.dart';
 
 import '../../../../core/global_var.dart';
 import '../../../../core/widgets/custom_text_form_field.dart';
+import 'custom_bottom_sheet.dart';
 
 class UserProfileBody extends StatelessWidget {
   const UserProfileBody({super.key});
@@ -48,7 +49,11 @@ class UserProfileBody extends StatelessWidget {
                     bottom: 0,
                     right: 0,
                     child: MaterialButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        showBottomSheetFun(
+                          context: context,
+                        );
+                      },
                       color: Colors.white,
                       shape: CircleBorder(),
                       height: screenSize.height * 0.05,
@@ -132,4 +137,5 @@ class UserProfileBody extends StatelessWidget {
       ),
     );
   }
+
 }
