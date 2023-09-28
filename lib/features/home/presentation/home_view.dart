@@ -22,65 +22,82 @@ class _HomeViewState extends State<HomeView> {
     super.initState();
     getSelfInfo();
   }
-bool isSearching = false;
+
+  bool isSearching = false;
+
   @override
   Widget build(BuildContext context) {
     var blocHelper = BlocProvider.of<HomeCubit>(context);
-    return Scaffold(
-      appBar: AppBar(
-        leading: Icon(CupertinoIcons.home),
-        title: isSearching
-            ? TextField(
-                autofocus: true,
-                style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 16.0,
-                ),
-                decoration: InputDecoration(
-                  hintText: 'Email, Name,....',
-                  hintStyle: TextStyle(color: Colors.grey),
-                  border: InputBorder.none,
-                ),
-                onChanged: (value) {
-                  blocHelper.searchAboutUser(searchItem: value);
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: WillPopScope(
+        onWillPop: () {
+          print(isSearching);
+          if (isSearching) {
+            setState(() {
+              isSearching = !isSearching;
+            });
+            //false : do nothing
+            return Future.value(false);
+          }
+          //true : perform normal back button task
+          return Future.value(true);
+        },
+        child: Scaffold(
+          appBar: AppBar(
+            leading: Icon(CupertinoIcons.home),
+            title: isSearching
+                ? TextField(
+                    autofocus: true,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 16.0,
+                    ),
+                    decoration: InputDecoration(
+                      hintText: 'Email, Name,....',
+                      hintStyle: TextStyle(color: Colors.grey),
+                      border: InputBorder.none,
+                    ),
+                    onChanged: (value) {
+                      blocHelper.searchAboutUser(searchItem: value);
+                    },
+                  )
+                : Text('We Chat'),
+            actions: [
+              IconButton(
+                onPressed: () {
+                  isSearching = !isSearching;
+                  setState(() {});
                 },
-              )
-            : Text('We Chat'),
-        actions: [
-          IconButton(
-            onPressed: () {
-              isSearching  =!isSearching;
-              setState(() {
-
-              });
-            },
-            icon: isSearching
-                ? Icon(CupertinoIcons.clear_circled_solid)
-                : Icon(Icons.search),
+                icon: isSearching
+                    ? Icon(CupertinoIcons.clear_circled_solid)
+                    : Icon(Icons.search),
+              ),
+              IconButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => UserProfile(),
+                    ),
+                  );
+                },
+                icon: Icon(Icons.more_vert),
+              ),
+            ],
           ),
-          IconButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => UserProfile(),
-                ),
-              );
-            },
-            icon: Icon(Icons.more_vert),
+          floatingActionButton: Padding(
+            padding: EdgeInsets.only(bottom: screenSize.height * 0.01),
+            child: FloatingActionButton(
+              onPressed: () {},
+              child: Icon(
+                Icons.add_comment_rounded,
+              ),
+            ),
           ),
-        ],
-      ),
-      floatingActionButton: Padding(
-        padding: EdgeInsets.only(bottom: screenSize.height * 0.01),
-        child: FloatingActionButton(
-          onPressed: () {},
-          child: Icon(
-            Icons.add_comment_rounded,
-          ),
+          body: HomeViewBody(),
         ),
       ),
-      body: HomeViewBody(),
     );
   }
 }
