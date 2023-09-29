@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:we_chat/core/global_var.dart';
 import 'package:we_chat/features/auth/login/manager/auth_repo/auth_repo.dart';
 
 class AuthRepoImp implements AuthRepo {
@@ -25,7 +26,7 @@ class AuthRepoImp implements AuthRepo {
       );
       // Once signed in, return the UserCredential
       return right(
-          await FirebaseAuth.instance.signInWithCredential(credential));
+          await firebaseAuth.signInWithCredential(credential));
     } catch (err) {
       if (err.toString().contains('SocketException')) {
         return left('Please check your internet connection');

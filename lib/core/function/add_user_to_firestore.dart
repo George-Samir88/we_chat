@@ -4,7 +4,7 @@ import 'package:we_chat/core/global_var.dart';
 import '../../features/home/manager/models/user_model.dart';
 
 Future<void> addUserToFireStore() async {
-  User? currentUser = FirebaseAuth.instance.currentUser;
+  User? currentUser = firebaseAuth.currentUser;
   String dateTime = DateTime.now().millisecondsSinceEpoch.toString();
   ChatUser user = ChatUser(
       image: currentUser!.photoURL.toString(),

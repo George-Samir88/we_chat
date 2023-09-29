@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:we_chat/core/global_var.dart';
 import 'package:we_chat/features/home/manager/models/user_model.dart';
@@ -15,7 +14,7 @@ class HomeCubit extends Cubit<HomeState> {
     try {
       firestore
           .collection('users')
-          .where('id', isNotEqualTo: FirebaseAuth.instance.currentUser!.uid)
+          .where('id', isNotEqualTo:firebaseAuth.currentUser!.uid)
           .snapshots()
           .listen((snapshot) {
         if (snapshot.docs.isNotEmpty) {
@@ -64,7 +63,7 @@ class HomeCubit extends Cubit<HomeState> {
 // void getAllUsersExceptMe() {
 //   firestore
 //       .collection('users')
-//       .where('id', isNotEqualTo: FirebaseAuth.instance.currentUser!.uid)
+//       .where('id', isNotEqualTo: firebaseAuth.currentUser!.uid)
 //       .snapshots()
 //       .listen((snapshot) {
 //     if (snapshot.docs.isNotEmpty) {

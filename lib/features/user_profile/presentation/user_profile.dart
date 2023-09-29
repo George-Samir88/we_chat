@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -30,7 +29,7 @@ class UserProfile extends StatelessWidget {
               right: screenSize.width * 0.01),
           child: FloatingActionButton.extended(
             onPressed: () async {
-              await FirebaseAuth.instance.signOut().then((value) async {
+              await firebaseAuth.signOut().then((value) async {
                 await GoogleSignIn().signOut().then((value) {
                   // Remove data for the 'token' key.
                   removeDataFromSharedPreferences(key: 'token');
