@@ -18,17 +18,29 @@ class PhotoEmailSectionUserProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var blocHelper = BlocProvider.of<UserProfileCubit>(context);
-    return Column(
-      children: [
-        BlocConsumer<UserProfileCubit, UserProfileState>(
-          listener: (context, state) {
-            if (state is UserProfilePickPhotoError) {
-              customAlertMessage(
-                  message: state.error, backgroundColor: Colors.red);
-            }
-          },
-          builder: (context, state) {
-            return Stack(
+    return BlocConsumer<UserProfileCubit, UserProfileState>(
+      listener: (context, state) {
+        if (state is UserProfilePickPhotoError) {
+          customAlertMessage(message: state.error, backgroundColor: Colors.red);
+        } else if (state is UserProfileUpdatePhotoSuccess) {
+          customAlertMessage(
+              message: 'Updated successfully', backgroundColor: Colors.green);
+        } else if (state is UserProfileUpdatePhotoError) {
+          customAlertMessage(
+              message: 'Unable to update photo ${state.error}',
+              backgroundColor: Colors.red);
+        }
+      },
+      builder: (context, state) {
+        return Column(
+          children: [
+            if(state is UserProfileUpdatePhotoLoading)
+              LinearProgressIndicator(),
+            if(state is UserProfileUpdatePhotoLoading)
+              SizedBox(
+                height: screenSize.height * 0.01,
+              ),
+            Stack(
               children: [
                 blocHelper.imagePicked == null
                     ? ClipRRect(
@@ -65,14 +77,16 @@ class PhotoEmailSectionUserProfile extends StatelessWidget {
                     onPressed: () {
                       showBottomSheetFun(
                         onCameraButtonPressed: () async {
-                          await blocHelper.pickProfilePicture(
-                              imageSource: ImageSource.camera);
                           Navigator.pop(context);
+                          await blocHelper
+                              .pickProfilePictureAndUpdateInFirestore(
+                                  imageSource: ImageSource.camera);
                         },
                         onGalleryButtonPressed: () async {
-                          await blocHelper.pickProfilePicture(
-                              imageSource: ImageSource.gallery);
                           Navigator.pop(context);
+                          await blocHelper
+                              .pickProfilePictureAndUpdateInFirestore(
+                                  imageSource: ImageSource.gallery);
                         },
                         context: context,
                       );
@@ -89,21 +103,21 @@ class PhotoEmailSectionUserProfile extends StatelessWidget {
                   ),
                 ),
               ],
-            );
-          },
-        ),
-        SizedBox(
-          height: screenSize.height * 0.03,
-        ),
-        Text(
-          me.email,
-          style: TextStyle(
-              color: Colors.grey.shade700, fontWeight: FontWeight.w600),
-        ),
-        SizedBox(
-          height: screenSize.height * 0.02,
-        ),
-      ],
+            ),
+            SizedBox(
+              height: screenSize.height * 0.03,
+            ),
+            Text(
+              me.email,
+              style: TextStyle(
+                  color: Colors.grey.shade700, fontWeight: FontWeight.w600),
+            ),
+            SizedBox(
+              height: screenSize.height * 0.02,
+            ),
+          ],
+        );
+      },
     );
   }
 }
