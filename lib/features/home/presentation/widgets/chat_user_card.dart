@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:we_chat/core/global_var.dart';
+import 'package:we_chat/features/chat/presentation/chat_view.dart';
 import 'package:we_chat/features/home/manager/models/user_model.dart';
 
 class ChatUserCard extends StatelessWidget {
@@ -18,8 +19,15 @@ class ChatUserCard extends StatelessWidget {
         horizontal: screenSize.width * 0.02,
       ),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-      child: GestureDetector(
-        onTap: () {},
+      child: InkWell(
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ChatView(
+                        chatUser: user,
+                      )));
+        },
         child: ListTile(
           title: Text(user.name, style: TextStyle(fontSize: 18)),
           subtitle: Text(
@@ -30,14 +38,24 @@ class ChatUserCard extends StatelessWidget {
             ),
             maxLines: 1,
           ),
-          leading: ClipRRect(
-            borderRadius: BorderRadius.circular(screenSize.width * 0.08),
-            child: CachedNetworkImage(
-              imageUrl: user.image,
-              progressIndicatorBuilder: (context, url, downloadProgress) =>
-                  CircularProgressIndicator(value: downloadProgress.progress),
-              errorWidget: (context, url, error) => Icon(CupertinoIcons.person),
-            ),
+          leading: CachedNetworkImage(
+            imageUrl: user.image,
+            imageBuilder: (context, imageProvider) {
+              return Container(
+                width: screenSize.width * 0.15,
+                height: screenSize.width * 0.15,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                    image: imageProvider,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              );
+            },
+            progressIndicatorBuilder: (context, url, downloadProgress) =>
+                CircularProgressIndicator(value: downloadProgress.progress),
+            errorWidget: (context, url, error) => Icon(CupertinoIcons.person),
           ),
           // trailing: Text(
           //   '12:00 pm',

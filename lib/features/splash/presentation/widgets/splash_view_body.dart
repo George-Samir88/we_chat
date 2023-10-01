@@ -70,7 +70,7 @@ class _SplashViewBodyState extends State<SplashViewBody> {
   void exitFullScreenMode() {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
+      statusBarColor: Colors.white,
       systemNavigationBarColor: Colors.white,
     ));
   }
