@@ -51,7 +51,7 @@ class CustomFlexibleAppBar extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
-                height: screenSize.height * 0.001,
+                height: screenSize.height * 0.005,
               ),
               Text(
                 chatUser.name,
