@@ -4,7 +4,7 @@ import 'package:we_chat/features/home/manager/cubit/home_cubit/home_cubit.dart';
 import 'package:we_chat/features/home/manager/cubit/home_cubit/home_state.dart';
 
 import 'chat_users_list_view.dart';
-import 'custom_error_widget.dart';
+import '../../../../core/widgets/custom_error_widget.dart';
 import 'no_users_widget.dart';
 
 class HomeViewBody extends StatelessWidget {

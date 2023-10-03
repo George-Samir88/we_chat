@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:we_chat/features/chat/manager/cubit/chat_cubit.dart';
 import 'package:we_chat/features/chat/presentation/widgets/chat_view_body.dart';
 import 'package:we_chat/features/chat/presentation/widgets/custom_flexible_app_bar.dart';
 import 'package:we_chat/features/home/manager/models/user_model.dart';
@@ -10,15 +12,18 @@ class ChatView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          flexibleSpace: CustomFlexibleAppBar(
-            chatUser: chatUser,
+    return BlocProvider(
+      create: (context) => ChatCubit(),
+      child: SafeArea(
+        child: Scaffold(
+          appBar: AppBar(
+            automaticallyImplyLeading: false,
+            flexibleSpace: CustomFlexibleAppBar(
+              chatUser: chatUser,
+            ),
           ),
+          body: ChatViewBody(),
         ),
-        body: ChatViewBody(),
       ),
     );
   }
