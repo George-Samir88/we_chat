@@ -16,6 +16,7 @@ class ChatView extends StatelessWidget {
       create: (context) => ChatCubit()..getAllMessages(),
       child: SafeArea(
         child: Scaffold(
+          backgroundColor: Color.fromARGB(255, 234, 248, 255),
           appBar: AppBar(
             automaticallyImplyLeading: false,
             flexibleSpace: CustomFlexibleAppBar(
