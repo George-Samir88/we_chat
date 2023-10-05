@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => HomeCubit()..getChatUsers(),
+      create: (context) => HomeCubit(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'We Chat',

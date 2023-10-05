@@ -13,7 +13,7 @@ class ChatView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => ChatCubit()..getAllMessages(),
+      create: (context) => ChatCubit()..getAllMessages(chatUser: chatUser),
       child: SafeArea(
         child: Scaffold(
           backgroundColor: Color.fromARGB(255, 234, 248, 255),
@@ -23,7 +23,9 @@ class ChatView extends StatelessWidget {
               chatUser: chatUser,
             ),
           ),
-          body: ChatViewBody(),
+          body: ChatViewBody(
+            chatUser: chatUser,
+          ),
         ),
       ),
     );

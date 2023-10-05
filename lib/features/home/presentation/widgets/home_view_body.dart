@@ -17,6 +17,7 @@ class HomeViewBody extends StatelessWidget {
       builder: (context, state) {
         if (state is HomeGetUserSuccessState) {
           if (state.users.isNotEmpty) {
+            print('------------------------------' + state.users[0].name + '---------------------------------');
             return ChatUsersListView(
               users: state.users,
             );

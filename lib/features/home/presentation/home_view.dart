@@ -19,8 +19,9 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   @override
   initState() {
+    BlocProvider.of<HomeCubit>(context).getChatUsers();
+    getSelfInfo(uid: firebaseAuth.currentUser!.uid);
     super.initState();
-    getSelfInfo();
   }
 
   bool isSearching = false;

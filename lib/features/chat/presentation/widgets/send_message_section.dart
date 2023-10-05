@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:we_chat/features/chat/manager/cubit/chat_cubit.dart';
+import 'package:we_chat/features/home/manager/models/user_model.dart';
 
 import '../../../../core/global_var.dart';
 
 class SendMessageSection extends StatelessWidget {
-  const SendMessageSection({
+  SendMessageSection({
     super.key,
+    required this.chatUser,
   });
 
+  final ChatUser chatUser;
+  final textEditingController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -38,6 +44,7 @@ class SendMessageSection extends StatelessWidget {
                   Expanded(
                     child: TextField(
                       maxLines: null,
+                      controller: textEditingController,
                       keyboardType: TextInputType.multiline,
                       style: TextStyle(
                         color: Colors.blueAccent,
@@ -57,7 +64,7 @@ class SendMessageSection extends StatelessWidget {
                       Icons.image,
                     ),
                     color: Colors.blueAccent,
-                    splashRadius:  screenSize.width * 0.06,
+                    splashRadius: screenSize.width * 0.06,
                     iconSize: screenSize.width * 0.07,
                     tooltip: 'Attach image',
                   ),
@@ -77,11 +84,25 @@ class SendMessageSection extends StatelessWidget {
           ),
           CircleAvatar(
             backgroundColor: Colors.green,
+            radius: screenSize.width * 0.05,
             child: IconButton(
-              onPressed: () {},
+              onPressed: () async {
+                // triggerScrollDown();
+                if (textEditingController.text.isNotEmpty) {
+                  await BlocProvider.of<ChatCubit>(context)
+                      .sendMessage(
+                          chatUser: chatUser,
+                          message: textEditingController.text)
+                      .then((value) {
+                    textEditingController.clear();
+                  });
+                }
+              },
               splashRadius: screenSize.width * 0.06,
-              icon: Icon(Icons.send),
-              iconSize: screenSize.width * 0.07,
+              icon: Icon(
+                Icons.send,
+                size: screenSize.width * 0.06,
+              ),
               color: Colors.white,
               splashColor: Colors.grey,
             ),
