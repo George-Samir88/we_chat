@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:we_chat/features/chat/manager/cubit/chat_cubit.dart';
-import 'package:we_chat/features/home/manager/models/user_model.dart';
 
 import '../../../../core/global_var.dart';
+import 'chat_view_body.dart';
 
 class SendMessageSection extends StatelessWidget {
   SendMessageSection({
     super.key,
-    required this.chatUser,
-  });
+    required this.widget,
+    required ScrollController scrollController,
+  }) : _scrollController = scrollController;
 
-  final ChatUser chatUser;
   final textEditingController = TextEditingController();
+  final ChatViewBody widget;
+  final ScrollController _scrollController;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -84,24 +87,26 @@ class SendMessageSection extends StatelessWidget {
           ),
           CircleAvatar(
             backgroundColor: Colors.green,
-            radius: screenSize.width * 0.05,
+            radius: screenSize.width * 0.06,
             child: IconButton(
               onPressed: () async {
-                // triggerScrollDown();
                 if (textEditingController.text.isNotEmpty) {
                   await BlocProvider.of<ChatCubit>(context)
                       .sendMessage(
-                          chatUser: chatUser,
+                          chatUser: widget.chatUser,
                           message: textEditingController.text)
                       .then((value) {
                     textEditingController.clear();
                   });
+                  _scrollController.animateTo(0,
+                      duration: const Duration(milliseconds: 1),
+                      curve: Curves.easeIn);
                 }
               },
               splashRadius: screenSize.width * 0.06,
               icon: Icon(
                 Icons.send,
-                size: screenSize.width * 0.06,
+                size: screenSize.width * 0.07,
               ),
               color: Colors.white,
               splashColor: Colors.grey,

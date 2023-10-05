@@ -8,7 +8,12 @@ import '../../manager/cubit/chat_state.dart';
 import 'custom_message_card_list_view.dart';
 
 class ChatUserBlocConsumer extends StatelessWidget {
-  const ChatUserBlocConsumer({Key? key}) : super(key: key);
+  const ChatUserBlocConsumer({
+    super.key,
+    required ScrollController scrollController,
+  }) : _scrollController = scrollController;
+
+  final ScrollController _scrollController;
 
   @override
   Widget build(BuildContext context) {
@@ -17,10 +22,6 @@ class ChatUserBlocConsumer extends StatelessWidget {
         customAlertMessage(
             message: 'an error occurred ${state.error}',
             backgroundColor: Colors.red);
-      } else if (state is ChatGetMessagesSuccess) {
-        final listViewState =
-            context.findAncestorStateOfType<CustomMessageCardListViewState>();
-        listViewState?.scrollToBottom();
       }
     }, builder: (context, state) {
       if (state is ChatGetMessagesError) {
@@ -31,7 +32,8 @@ class ChatUserBlocConsumer extends StatelessWidget {
             child: Text('Say hallo 👋'),
           );
         } else {
-          return CustomMessageCardListView(
+          return CustomMessagesListView(
+            scrollController: _scrollController,
             messages: state.messages,
           );
         }

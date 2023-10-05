@@ -13,6 +13,7 @@ class ChatCubit extends Cubit<ChatState> {
     try {
       firestore
           .collection('chats/${getConversationId(chatUser.id)}/messages/')
+          .orderBy('sent', descending: true)
           .snapshots()
           .listen((snapshot) {
         if (snapshot.docs.isNotEmpty) {
@@ -32,7 +33,7 @@ class ChatCubit extends Cubit<ChatState> {
 
   Future<void> sendMessage(
       {required ChatUser chatUser, required String message}) async {
-    final String dateTime = DateTime.now().millisecondsSinceEpoch.toString();
+    final String dateTime = DateTime.now().toString();
     final MessageModel messageModel = MessageModel(
         msg: message,
         toId: chatUser.id,

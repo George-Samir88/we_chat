@@ -3,27 +3,38 @@ import 'package:we_chat/features/chat/presentation/widgets/send_message_section.
 import 'package:we_chat/features/home/manager/models/user_model.dart';
 
 import 'chat_user_bloc_consumer.dart';
-import 'custom_message_card_list_view.dart';
 
-class ChatViewBody extends StatelessWidget {
+class ChatViewBody extends StatefulWidget {
   ChatViewBody({super.key, required this.chatUser});
 
   final ChatUser chatUser;
-  final GlobalKey<CustomMessageCardListViewState> listViewKey =
-      GlobalKey<CustomMessageCardListViewState>();
+
+  @override
+  State<ChatViewBody> createState() => _ChatViewBodyState();
+}
+
+class _ChatViewBodyState extends State<ChatViewBody> {
+  late ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Expanded(
-            child: ChatUserBlocConsumer(
-          // listViewKey: listViewKey,
-        )),
-        SendMessageSection(
-          // listViewKey: listViewKey,
-          chatUser: chatUser,
+          child: ChatUserBlocConsumer(scrollController: _scrollController),
         ),
+        SendMessageSection(widget: widget, scrollController: _scrollController),
       ],
     );
   }
