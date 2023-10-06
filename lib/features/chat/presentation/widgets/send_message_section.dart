@@ -46,7 +46,8 @@ class SendMessageSection extends StatelessWidget {
                   ),
                   Expanded(
                     child: TextField(
-                      maxLines: null,
+                      minLines: 1,
+                      maxLines: 5,
                       controller: textEditingController,
                       keyboardType: TextInputType.multiline,
                       style: TextStyle(
