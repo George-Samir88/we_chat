@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:we_chat/features/chat/manager/models/message_model.dart';
 
 import '../../../../core/global_var.dart';
@@ -27,7 +28,7 @@ class SenderMessageCard extends StatelessWidget {
               width: 4,
             ),
             Text(
-              message.read,
+              DateFormat.jm().format(DateTime.parse(message.sent)),
               style: TextStyle(color: Colors.black54, fontSize: 13),
             ),
           ],
