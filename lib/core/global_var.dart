@@ -9,4 +9,4 @@ late Size screenSize;
 FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 FirebaseFirestore firestore = FirebaseFirestore.instance;
 FirebaseStorage firebaseStorage = FirebaseStorage.instance;
-late ChatUser me;
+ChatUser? me;

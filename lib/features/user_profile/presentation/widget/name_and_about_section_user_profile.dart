@@ -12,7 +12,7 @@ class NameAndAboutSectionUserProfile extends StatelessWidget {
       children: [
         CustomTextFormField(
           onSaved: (value) {
-            me.name = value!;
+            me!.name = value!;
           },
           validator: (value) {
             if (value!.isEmpty) {
@@ -24,14 +24,14 @@ class NameAndAboutSectionUserProfile extends StatelessWidget {
           hintText: "ex: George Samir",
           maxLines: 1,
           prefixIcon: CupertinoIcons.person,
-          initialValue: me.name,
+          initialValue: me!.name,
         ),
         SizedBox(
           height: screenSize.height * 0.02,
         ),
         CustomTextFormField(
           onSaved: (value) {
-            me.about = value!;
+            me!.about = value!;
           },
           validator: (value) {
             if (value!.isEmpty) {
@@ -43,7 +43,7 @@ class NameAndAboutSectionUserProfile extends StatelessWidget {
           hintText: "ex: i'm happy now",
           maxLines: 1,
           prefixIcon: CupertinoIcons.info_circle,
-          initialValue: me.about,
+          initialValue: me!.about,
         ),
       ],
     );

@@ -6,8 +6,8 @@ Future<void> updateUserprofile() async {
       .collection('users')
       .doc(firebaseAuth.currentUser!.uid)
       .update({
-    'name': me.name,
-    'image': me.image,
-    'about': me.about,
+    'name': me!.name,
+    'image': me!.image,
+    'about': me!.about,
   });
 }

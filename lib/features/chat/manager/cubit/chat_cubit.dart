@@ -48,7 +48,7 @@ class ChatCubit extends Cubit<ChatState> {
 
   //we will follow this pattern
 //chats (collection) ==> conversation_id (doc) ==> messages (collection) ==> message (doc)
-  String getConversationId(String id) => me.id.hashCode <= id.hashCode
+  String getConversationId(String id) => me!.id.hashCode <= id.hashCode
       ? '${firebaseAuth.currentUser!.uid}_$id'
       : '${id}_${firebaseAuth.currentUser!.uid}';
 }

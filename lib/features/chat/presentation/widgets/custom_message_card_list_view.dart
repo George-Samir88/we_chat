@@ -20,7 +20,7 @@ class CustomMessagesListView extends StatelessWidget {
         controller: _scrollController,
         reverse: true,
         itemBuilder: (context, index) {
-          return messages[index].fromId == me.id
+          return messages[index].fromId == me!.id
               ? SenderMessageCard(
                   message: messages[index],
                 )

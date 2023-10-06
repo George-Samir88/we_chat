@@ -49,7 +49,7 @@ class PhotoEmailSectionUserProfile extends StatelessWidget {
                         child: CachedNetworkImage(
                           height: screenSize.height * 0.3,
                           width: screenSize.height * 0.3,
-                          imageUrl: me.image,
+                          imageUrl: me!.image,
                           fit: BoxFit.fill,
                           progressIndicatorBuilder:
                               (context, url, downloadProgress) => Center(
@@ -108,7 +108,7 @@ class PhotoEmailSectionUserProfile extends StatelessWidget {
               height: screenSize.height * 0.03,
             ),
             Text(
-              me.email,
+              me!.email,
               style: TextStyle(
                   color: Colors.grey.shade700, fontWeight: FontWeight.w600),
             ),

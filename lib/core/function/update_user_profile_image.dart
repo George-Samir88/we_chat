@@ -9,7 +9,7 @@ Future<void> updateUserProfileImage(File file) async {
   var extension = file.path.split('.').last;
   //storage file reference with path
   var reference =
-      firebaseStorage.ref().child('profile_pictures/${me.id}.$extension');
+      firebaseStorage.ref().child('profile_pictures/${me!.id}.$extension');
   //uploading image
   await reference
       .putFile(file, SettableMetadata(contentType: 'image/$extension'))
@@ -17,8 +17,8 @@ Future<void> updateUserProfileImage(File file) async {
     print(' ${p0.bytesTransferred / 1000} kb');
   });
   //updating image in firestore
-  me.image = await reference.getDownloadURL();
-  await firestore.collection('users').doc(me.id).update({
-    'image': me.image,
+  me!.image = await reference.getDownloadURL();
+  await firestore.collection('users').doc(me!.id).update({
+    'image': me!.image,
   });
 }
