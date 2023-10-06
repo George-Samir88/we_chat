@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -46,7 +47,10 @@ class _HomeViewState extends State<HomeView> {
         },
         child: Scaffold(
           appBar: AppBar(
-            leading: Icon(CupertinoIcons.home),
+            leading: Icon(
+              CupertinoIcons.home,
+              size: screenSize.width * 0.07,
+            ),
             title: isSearching
                 ? TextField(
                     autofocus: true,
@@ -71,19 +75,46 @@ class _HomeViewState extends State<HomeView> {
                   setState(() {});
                 },
                 icon: isSearching
-                    ? Icon(CupertinoIcons.clear_circled_solid)
-                    : Icon(Icons.search),
+                    ? Icon(
+                        CupertinoIcons.clear_circled_solid,
+                        size: screenSize.width * 0.07,
+                      )
+                    : Icon(
+                        Icons.search,
+                        size: screenSize.width * 0.07,
+                      ),
               ),
-              IconButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => UserProfile(),
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: screenSize.width * 0.02,
+                ),
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => UserProfile(),
+                      ),
+                    );
+                  },
+                  child: CircleAvatar(
+                    radius: screenSize.width * 0.05,
+                    backgroundImage: CachedNetworkImageProvider(
+                      me.image,
+                      errorListener: () => IconButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => UserProfile(),
+                            ),
+                          );
+                        },
+                        icon: Icon(Icons.more_vert),
+                      ),
                     ),
-                  );
-                },
-                icon: Icon(Icons.more_vert),
+                  ),
+                ),
               ),
             ],
           ),
