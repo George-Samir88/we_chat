@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:we_chat/features/chat/manager/cubit/chat_cubit.dart';
 
 import '../../../../core/global_var.dart';
+import '../../manager/cubits/chat_cubit/chat_cubit.dart';
 import 'chat_view_body.dart';
 
 class SendMessageSection extends StatelessWidget {

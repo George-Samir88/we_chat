@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:we_chat/features/chat/manager/cubits/chat_cubit/chat_cubit.dart';
 import 'package:we_chat/features/chat/presentation/widgets/send_message_section.dart';
 import 'package:we_chat/features/home/manager/models/user_model.dart';
 
 import 'chat_user_bloc_consumer.dart';
 
 class ChatViewBody extends StatefulWidget {
-  ChatViewBody({super.key, required this.chatUser});
+  ChatViewBody({
+    super.key,
+    required this.chatUser,
+  });
 
   final ChatUser chatUser;
 
@@ -18,6 +23,7 @@ class _ChatViewBodyState extends State<ChatViewBody> {
 
   @override
   void initState() {
+    context.read<ChatCubit>().getAllMessages(chatUser: widget.chatUser);
     super.initState();
   }
 

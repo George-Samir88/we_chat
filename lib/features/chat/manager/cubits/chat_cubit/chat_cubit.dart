@@ -2,7 +2,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:we_chat/core/global_var.dart';
 import 'package:we_chat/features/chat/manager/models/message_model.dart';
 import 'package:we_chat/features/home/manager/models/user_model.dart';
-
 import 'chat_state.dart';
 
 class ChatCubit extends Cubit<ChatState> {
@@ -45,10 +44,20 @@ class ChatCubit extends Cubit<ChatState> {
         .collection('chats/${getConversationId(chatUser.id)}/messages/');
     await ref.doc(dateTime).set(messageModel.toJson());
   }
+}
 
-  //we will follow this pattern
+//we will follow this pattern
 //chats (collection) ==> conversation_id (doc) ==> messages (collection) ==> message (doc)
-  String getConversationId(String id) => me!.id.hashCode <= id.hashCode
-      ? '${firebaseAuth.currentUser!.uid}_$id'
-      : '${id}_${firebaseAuth.currentUser!.uid}';
+String getConversationId(String id) => me!.id.hashCode <= id.hashCode
+    ? '${firebaseAuth.currentUser!.uid}_$id'
+    : '${id}_${firebaseAuth.currentUser!.uid}';
+
+Future<void> markMessageAsRead({required MessageModel messageModel}) async {
+  var time = DateTime.now().toString();
+  print('---------------------' + messageModel.fromId + messageModel.sent);
+  var ref = firestore
+      .collection('chats/${getConversationId(messageModel.fromId)}/messages/');
+  await ref.doc(messageModel.sent).update({
+    'read': time,
+  });
 }

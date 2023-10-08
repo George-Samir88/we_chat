@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:we_chat/features/chat/manager/cubits/chat_cubit/chat_cubit.dart';
 import 'package:we_chat/features/chat/manager/models/message_model.dart';
 
 import '../../../../core/global_var.dart';
@@ -19,14 +20,16 @@ class SenderMessageCard extends StatelessWidget {
             SizedBox(
               width: screenSize.width * 0.02,
             ),
-            Icon(
-              Icons.done_all_rounded,
-              size: 24,
-              color: Colors.blue,
-            ),
-            SizedBox(
-              width: 4,
-            ),
+            if (message.read.isNotEmpty)
+              Icon(
+                Icons.done_all_rounded,
+                size: 24,
+                color: Colors.blue,
+              ),
+            if (message.read.isNotEmpty)
+              SizedBox(
+                width: 4,
+              ),
             Text(
               DateFormat.jm().format(DateTime.parse(message.sent)),
               style: TextStyle(color: Colors.black54, fontSize: 13),
@@ -67,6 +70,9 @@ class ReceiverMessageCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (message.read.isEmpty) {
+      markMessageAsRead(messageModel: message);
+    }
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -97,7 +103,7 @@ class ReceiverMessageCard extends StatelessWidget {
             right: screenSize.width * 0.02,
           ),
           child: Text(
-            message.sent,
+            DateFormat.jm().format(DateTime.parse(message.sent)),
             style: TextStyle(color: Colors.black54, fontSize: 13),
           ),
         ),

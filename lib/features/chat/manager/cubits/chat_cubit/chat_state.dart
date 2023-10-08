@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../models/message_model.dart';
+import '../../models/message_model.dart';
+
 
 @immutable
 abstract class ChatState {}
