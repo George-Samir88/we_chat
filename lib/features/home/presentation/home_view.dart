@@ -49,20 +49,20 @@ class _HomeViewState extends State<HomeView> {
             leading: Icon(CupertinoIcons.home),
             title: isSearching
                 ? TextField(
-                    autofocus: true,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 16.0,
-                    ),
-                    decoration: InputDecoration(
-                      hintText: 'Email, Name,....',
-                      hintStyle: TextStyle(color: Colors.grey),
-                      border: InputBorder.none,
-                    ),
-                    onChanged: (value) {
-                      blocHelper.searchAboutUser(searchItem: value);
-                    },
-                  )
+              autofocus: true,
+              style: TextStyle(
+                fontWeight: FontWeight.w500,
+                fontSize: 16.0,
+              ),
+              decoration: InputDecoration(
+                hintText: 'Email, Name,....',
+                hintStyle: TextStyle(color: Colors.grey),
+                border: InputBorder.none,
+              ),
+              onChanged: (value) {
+                blocHelper.searchAboutUser(searchItem: value);
+              },
+            )
                 : Text('We Chat'),
             actions: [
               IconButton(
