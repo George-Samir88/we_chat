@@ -2,10 +2,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:we_chat/core/global_var.dart';
 import 'package:we_chat/features/chat/manager/models/message_model.dart';
 import 'package:we_chat/features/home/manager/models/user_model.dart';
-import 'chat_state.dart';
+import 'get_messages_state.dart';
 
-class ChatCubit extends Cubit<ChatState> {
-  ChatCubit() : super(ChatInitial());
+class GetMessagesCubit extends Cubit<GetMessagesState> {
+  GetMessagesCubit() : super(ChatInitial());
 
   void getAllMessages({required ChatUser chatUser}) {
     emit(ChatGetMessagesLoading());

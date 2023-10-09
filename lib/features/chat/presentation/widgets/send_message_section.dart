@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:we_chat/features/chat/manager/cubits/send_message_cubit/send_message_cubit.dart';
 
 import '../../../../core/global_var.dart';
-import '../../manager/cubits/chat_cubit/chat_cubit.dart';
 import 'chat_view_body.dart';
 
 class SendMessageSection extends StatelessWidget {
@@ -92,7 +92,7 @@ class SendMessageSection extends StatelessWidget {
             child: IconButton(
               onPressed: () async {
                 if (textEditingController.text.isNotEmpty) {
-                  await BlocProvider.of<ChatCubit>(context)
+                  await BlocProvider.of<SendMessageCubit>(context)
                       .sendMessage(
                           chatUser: widget.chatUser,
                           message: textEditingController.text)

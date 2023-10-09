@@ -4,8 +4,8 @@ import 'package:we_chat/core/widgets/custom_alert_message.dart';
 
 import '../../../../core/widgets/custom_error_widget.dart';
 
-import '../../manager/cubits/chat_cubit/chat_cubit.dart';
-import '../../manager/cubits/chat_cubit/chat_state.dart';
+import '../../manager/cubits/get_messages_cubit/get_messages_cubit.dart';
+import '../../manager/cubits/get_messages_cubit/get_messages_state.dart';
 import 'custom_message_card_list_view.dart';
 
 class ChatUserBlocConsumer extends StatelessWidget {
@@ -18,7 +18,7 @@ class ChatUserBlocConsumer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<ChatCubit, ChatState>(listener: (context, state) {
+    return BlocConsumer<GetMessagesCubit, GetMessagesState>(listener: (context, state) {
       if (state is ChatGetMessagesError) {
         customAlertMessage(
             message: 'an error occurred ${state.error}',

@@ -3,20 +3,20 @@ import 'package:flutter/material.dart';
 import '../../models/message_model.dart';
 
 @immutable
-abstract class ChatState {}
+abstract class GetMessagesState {}
 
-class ChatInitial extends ChatState {}
+class ChatInitial extends GetMessagesState {}
 
-class ChatGetMessagesSuccess extends ChatState {
+class ChatGetMessagesSuccess extends GetMessagesState {
   final List<MessageModel> messages;
 
   ChatGetMessagesSuccess({required this.messages});
 }
 
-class ChatGetMessagesError extends ChatState {
+class ChatGetMessagesError extends GetMessagesState {
   final String error;
 
   ChatGetMessagesError({required this.error});
 }
 
-class ChatGetMessagesLoading extends ChatState {}
+class ChatGetMessagesLoading extends GetMessagesState {}

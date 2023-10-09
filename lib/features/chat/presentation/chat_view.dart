@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:we_chat/features/chat/manager/cubits/chat_cubit/chat_cubit.dart';
+import 'package:we_chat/features/chat/manager/cubits/send_message_cubit/send_message_cubit.dart';
 import 'package:we_chat/features/chat/presentation/widgets/chat_view_body.dart';
 import 'package:we_chat/features/chat/presentation/widgets/custom_flexible_app_bar.dart';
 import 'package:we_chat/features/home/manager/models/user_model.dart';
+
+import '../manager/cubits/get_messages_cubit/get_messages_cubit.dart';
 
 class ChatView extends StatelessWidget {
   const ChatView({
@@ -24,8 +26,15 @@ class ChatView extends StatelessWidget {
             chatUser: chatUser,
           ),
         ),
-        body: BlocProvider.value(
-          value: ChatCubit(),
+        body: MultiBlocProvider(
+          providers: [
+            BlocProvider.value(
+              value: GetMessagesCubit(),
+            ),
+            BlocProvider.value(
+              value: SendMessageCubit(),
+            ),
+          ],
           child: ChatViewBody(
             chatUser: chatUser,
           ),

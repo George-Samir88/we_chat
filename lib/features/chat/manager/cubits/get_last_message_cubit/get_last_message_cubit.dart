@@ -3,7 +3,7 @@ import 'package:we_chat/features/home/manager/models/user_model.dart';
 
 import '../../../../../core/global_var.dart';
 import '../../models/message_model.dart';
-import '../chat_cubit/chat_cubit.dart';
+import '../get_messages_cubit/get_messages_cubit.dart';
 import 'get_last_message_state.dart';
 
 class GetLastMessageCubit extends Cubit<GetLastMessageState> {
