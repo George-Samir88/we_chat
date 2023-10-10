@@ -5,7 +5,7 @@ import '../../models/message_model.dart';
 @immutable
 abstract class GetMessagesState {}
 
-class ChatInitial extends GetMessagesState {}
+class ChatGetMessagesInitial extends GetMessagesState {}
 
 class ChatGetMessagesSuccess extends GetMessagesState {
   final List<MessageModel> messages;

@@ -5,7 +5,7 @@ import 'package:we_chat/features/home/manager/models/user_model.dart';
 import 'get_messages_state.dart';
 
 class GetMessagesCubit extends Cubit<GetMessagesState> {
-  GetMessagesCubit() : super(ChatInitial());
+  GetMessagesCubit() : super(ChatGetMessagesInitial());
 
   void getAllMessages({required ChatUser chatUser}) {
     emit(ChatGetMessagesLoading());
