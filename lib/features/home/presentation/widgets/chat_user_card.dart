@@ -56,18 +56,50 @@ class ChatUserCard extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
-                subtitle: Text(
-                  state is ChatGetLastMessageSuccess
-                      ? (state.messages.isNotEmpty
-                          ? state.messages[0].msg
-                          : user.about)
-                      : user.about,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: 15,
-                  ),
-                  maxLines: 1,
-                ),
+                subtitle: state is ChatGetLastMessageSuccess
+                    ? (state.messages.isNotEmpty
+                        ? (state.messages[0].type == Type.text
+                            ? Text(
+                                state.messages[0].msg,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontSize: 15,
+                                ),
+                                maxLines: 1,
+                              )
+                            : Row(
+                                children: [
+                                  Icon(
+                                    Icons.image,
+                                    size: screenSize.width * 0.06,
+                                  ),
+                                  SizedBox(
+                                    width: screenSize.width * 0.012,
+                                  ),
+                                  Text(
+                                    'Photo',
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                    ),
+                                  ),
+                                ],
+                              ))
+                        : Text(
+                            user.about,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontSize: 15,
+                            ),
+                            maxLines: 1,
+                          ))
+                    : Text(
+                        user.about,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 15,
+                        ),
+                        maxLines: 1,
+                      ),
                 leading: CachedNetworkImage(
                   imageUrl: user.image,
                   imageBuilder: (context, imageProvider) {
