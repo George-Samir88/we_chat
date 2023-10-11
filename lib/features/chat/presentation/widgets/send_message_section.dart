@@ -111,7 +111,17 @@ class _SendMessageSectionState extends State<SendMessageSection> {
                               ),
                             ),
                             IconButton(
-                              onPressed: () {},
+                              onPressed: () async {
+                                await blocHelper
+                                    .pickImage(imageSource: ImageSource.gallery)
+                                    .then((value) {
+                                  if (value != null) {
+                                    blocHelper.sendImageMessage(
+                                        chatUser: widget.widget.chatUser,
+                                        file: File(value));
+                                  }
+                                });
+                              },
                               icon: Icon(
                                 Icons.image,
                               ),
@@ -121,10 +131,14 @@ class _SendMessageSectionState extends State<SendMessageSection> {
                               tooltip: 'Attach image',
                             ),
                             IconButton(
-                              onPressed: ()async {
-                                await blocHelper.pickImage(imageSource: ImageSource.camera).then((value) {
-                                  if(value!=null){
-                                    blocHelper.sendImageMessage(chatUser: widget.widget.chatUser, file: File(value));
+                              onPressed: () async {
+                                await blocHelper
+                                    .pickImage(imageSource: ImageSource.camera)
+                                    .then((value) {
+                                  if (value != null) {
+                                    blocHelper.sendImageMessage(
+                                        chatUser: widget.widget.chatUser,
+                                        file: File(value));
                                   }
                                 });
                               },

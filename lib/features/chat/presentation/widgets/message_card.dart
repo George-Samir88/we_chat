@@ -78,7 +78,7 @@ class SenderMessageCard extends StatelessWidget {
                         height: screenSize.height * 0.3,
                         width: screenSize.height * 0.3,
                         imageUrl: message.msg,
-                        fit: BoxFit.fill,
+                        fit: BoxFit.cover,
                         progressIndicatorBuilder:
                             (context, url, downloadProgress) => Center(
                           child: CircularProgressIndicator(
@@ -138,7 +138,7 @@ class ReceiverMessageCard extends StatelessWidget {
                       height: screenSize.height * 0.3,
                       width: screenSize.height * 0.3,
                       imageUrl: message.msg,
-                      fit: BoxFit.fill,
+                      fit: BoxFit.cover,
                       progressIndicatorBuilder:
                           (context, url, downloadProgress) => Center(
                         child: CircularProgressIndicator(
