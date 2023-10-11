@@ -1,4 +1,8 @@
+import 'dart:io';
+
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:we_chat/features/chat/manager/cubits/send_message_cubit/send_message_state.dart';
 
 import '../../../../../core/global_var.dart';
@@ -10,7 +14,9 @@ class SendMessageCubit extends Cubit<SendMessageState> {
   SendMessageCubit() : super(SendMessageInitial());
 
   Future<void> sendMessage(
-      {required ChatUser chatUser, required String message}) async {
+      {required ChatUser chatUser,
+      required String message,
+      required Type type}) async {
     emit(SendMessageLoading());
     try {
       final String dateTime = DateTime.now().toString();
@@ -18,7 +24,7 @@ class SendMessageCubit extends Cubit<SendMessageState> {
           msg: message,
           toId: chatUser.id,
           read: '',
-          type: Type.text,
+          type: type,
           fromId: firebaseAuth.currentUser!.uid,
           sent: dateTime);
       var ref = firestore
@@ -27,6 +33,36 @@ class SendMessageCubit extends Cubit<SendMessageState> {
       emit(SendMessageSuccess());
     } catch (err) {
       emit(SendMessageError(error: err.toString()));
+    }
+  }
+
+  Future<void> sendImageMessage(
+      {required ChatUser chatUser, required File file}) async {
+    var extension = file.path.split('.').last;
+    var ref = firebaseStorage.ref().child(
+        'chat_image/${getConversationId(chatUser.id)}/${DateTime.now()}.${extension}');
+    await ref
+        .putFile(
+      file,
+      SettableMetadata(contentType: 'image/$extension'),
+    )
+        .then((p0) {
+      print(p0.bytesTransferred / 1000);
+    });
+    String imageUrl = await ref.getDownloadURL();
+    await sendMessage(chatUser: chatUser, message: imageUrl, type: Type.image);
+  }
+
+  Future<String?> pickImage({required ImageSource imageSource}) async {
+    try {
+      final ImagePicker picker = ImagePicker();
+      final XFile? image =
+          await picker.pickImage(source: imageSource, imageQuality: 80);
+      emit(PickImageSuccess());
+      return image!.path;
+    } catch (err) {
+      emit(PickImageError(error: err.toString()));
+      return null;
     }
   }
 }

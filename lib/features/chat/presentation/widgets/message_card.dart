@@ -1,3 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -54,7 +56,9 @@ class SenderMessageCard extends StatelessWidget {
                 left: screenSize.height * 0.02,
                 right: screenSize.height * 0.02,
               ),
-              padding: EdgeInsets.all(screenSize.height * 0.02),
+              padding: message.type == Type.text
+                  ? EdgeInsets.all(screenSize.height * 0.02)
+                  : EdgeInsets.all(screenSize.height * 0.01),
               decoration: BoxDecoration(
                 border: Border.all(color: Colors.lightGreen),
                 color: Color.fromARGB(255, 218, 255, 176),
@@ -64,9 +68,26 @@ class SenderMessageCard extends StatelessWidget {
                   bottomLeft: Radius.circular(20),
                 ),
               ),
-              child: Text(
-                message.msg,
-              ),
+              child: message.type == Type.text
+                  ? Text(
+                      message.msg,
+                    )
+                  : ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: CachedNetworkImage(
+                        height: screenSize.height * 0.3,
+                        width: screenSize.height * 0.3,
+                        imageUrl: message.msg,
+                        fit: BoxFit.fill,
+                        progressIndicatorBuilder:
+                            (context, url, downloadProgress) => Center(
+                          child: CircularProgressIndicator(
+                              strokeWidth: 2, value: downloadProgress.progress),
+                        ),
+                        errorWidget: (context, url, error) =>
+                            Icon(CupertinoIcons.photo_fill),
+                      ),
+                    ),
             ),
           ),
         ],
@@ -95,7 +116,9 @@ class ReceiverMessageCard extends StatelessWidget {
               left: screenSize.height * 0.02,
               right: screenSize.height * 0.02,
             ),
-            padding: EdgeInsets.all(screenSize.height * 0.02),
+            padding: message.type == Type.text
+                ? EdgeInsets.all(screenSize.height * 0.02)
+                : EdgeInsets.all(screenSize.height * 0.01),
             decoration: BoxDecoration(
               border: Border.all(color: Colors.lightBlue),
               color: Color.fromARGB(255, 221, 245, 255),
@@ -105,9 +128,26 @@ class ReceiverMessageCard extends StatelessWidget {
                 bottomRight: Radius.circular(20),
               ),
             ),
-            child: Text(
-              message.msg,
-            ),
+            child: message.type == Type.text
+                ? Text(
+                    message.msg,
+                  )
+                : ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: CachedNetworkImage(
+                      height: screenSize.height * 0.3,
+                      width: screenSize.height * 0.3,
+                      imageUrl: message.msg,
+                      fit: BoxFit.fill,
+                      progressIndicatorBuilder:
+                          (context, url, downloadProgress) => Center(
+                        child: CircularProgressIndicator(
+                            strokeWidth: 2, value: downloadProgress.progress),
+                      ),
+                      errorWidget: (context, url, error) =>
+                          Icon(CupertinoIcons.photo_fill),
+                    ),
+                  ),
           ),
         ),
         Padding(

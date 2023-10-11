@@ -14,3 +14,11 @@ class SendMessageError extends SendMessageState {
 }
 
 class SendMessageLoading extends SendMessageState {}
+
+class PickImageSuccess extends SendMessageState {}
+
+class PickImageError extends SendMessageState {
+  final String error;
+
+  PickImageError({required this.error});
+}

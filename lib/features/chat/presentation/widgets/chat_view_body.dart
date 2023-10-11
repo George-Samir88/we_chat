@@ -38,7 +38,7 @@ class _ChatViewBodyState extends State<ChatViewBody> {
     return Column(
       children: [
         Expanded(
-          child: InkWell(onTap:(){
+          child: GestureDetector(onTap:(){
             FocusScope.of(context).unfocus();
           },
             child: ChatUserBlocConsumer(scrollController: _scrollController),),
