@@ -65,4 +65,16 @@ class SendMessageCubit extends Cubit<SendMessageState> {
       return null;
     }
   }
+
+  Future<List<XFile?>?> pickMultipleImageFromGallery() async {
+    try {
+      final ImagePicker picker = ImagePicker();
+      final List<XFile>? image = await picker.pickMultiImage(imageQuality: 80);
+      emit(PickImageSuccess());
+      return image;
+    } catch (err) {
+      emit(PickImageError(error: err.toString()));
+      return null;
+    }
+  }
 }

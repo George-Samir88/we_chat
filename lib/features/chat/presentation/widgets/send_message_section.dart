@@ -113,12 +113,14 @@ class _SendMessageSectionState extends State<SendMessageSection> {
                             IconButton(
                               onPressed: () async {
                                 await blocHelper
-                                    .pickImage(imageSource: ImageSource.gallery)
+                                    .pickMultipleImageFromGallery()
                                     .then((value) {
                                   if (value != null) {
-                                    blocHelper.sendImageMessage(
-                                        chatUser: widget.widget.chatUser,
-                                        file: File(value));
+                                    for (var image in value) {
+                                      blocHelper.sendImageMessage(
+                                          chatUser: widget.widget.chatUser,
+                                          file: File(image!.path));
+                                    }
                                   }
                                 });
                               },
