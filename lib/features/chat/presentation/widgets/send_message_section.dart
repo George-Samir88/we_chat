@@ -158,7 +158,7 @@ class _SendMessageSectionState extends State<SendMessageSection> {
                     ),
                     CircleAvatar(
                       backgroundColor: Colors.green,
-                      radius: screenSize.width * 0.06,
+                      radius: screenSize.height * 0.029,
                       child: IconButton(
                         onPressed: () async {
                           if (textEditingController.text.isNotEmpty) {
@@ -175,11 +175,11 @@ class _SendMessageSectionState extends State<SendMessageSection> {
                                 curve: Curves.easeIn);
                           }
                         },
-                        splashRadius: screenSize.width * 0.06,
+                        splashRadius: screenSize.height * 0.033,
                         icon: Icon(
                           Icons.send,
-                          size: screenSize.width * 0.07,
                         ),
+                        iconSize: screenSize.height * 0.04,
                         color: Colors.white,
                         splashColor: Colors.grey,
                       ),
