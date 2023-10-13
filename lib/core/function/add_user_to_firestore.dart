@@ -5,7 +5,7 @@ import '../../features/home/manager/models/user_model.dart';
 
 Future<void> addUserToFireStore() async {
   User? currentUser = firebaseAuth.currentUser;
-  String dateTime = DateTime.now().millisecondsSinceEpoch.toString();
+  String dateTime = DateTime.now().toString();
   ChatUser user = ChatUser(
       image: currentUser!.photoURL.toString(),
       name: currentUser.displayName.toString(),

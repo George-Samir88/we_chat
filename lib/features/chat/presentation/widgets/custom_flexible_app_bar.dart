@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:we_chat/core/widgets/custom_alert_message.dart';
 import 'package:we_chat/features/chat/manager/cubits/last_activate_cubit/last_activate_cubit.dart';
 import 'package:we_chat/features/chat/manager/cubits/last_activate_cubit/last_activate_state.dart';
+import 'package:we_chat/features/chat_user_profile/presentation/chat_user_profile.dart';
 
 import '../../../../core/global_var.dart';
 import '../../../home/manager/models/user_model.dart';
@@ -18,7 +19,14 @@ class CustomFlexibleAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ChatUserProfile(
+                      chatUser: chatUser,
+                    )));
+      },
       child: BlocConsumer<LastActivateCubit, LastActivateState>(
         listener: (context, state) {
           if (state is LastActivateError) {
