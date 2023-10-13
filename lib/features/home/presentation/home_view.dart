@@ -25,16 +25,22 @@ class _HomeViewState extends State<HomeView> {
         .updateMyActivateStatus(isOnline: true);
     BlocProvider.of<HomeCubit>(context).getChatUsers();
     getSelfInfo(uid: firebaseAuth.currentUser!.uid);
+    updateUserActivate();
+    super.initState();
+  }
+
+  void updateUserActivate() {
     SystemChannels.lifecycle.setMessageHandler((message) {
-      if (message.toString().contains('resume'))
-        BlocProvider.of<LastActivateCubit>(context)
-            .updateMyActivateStatus(isOnline: true);
-      if (message.toString().contains('pause'))
-        BlocProvider.of<LastActivateCubit>(context)
-            .updateMyActivateStatus(isOnline: false);
+      if (firebaseAuth.currentUser != null) {
+        if (message.toString().contains('resume'))
+          BlocProvider.of<LastActivateCubit>(context)
+              .updateMyActivateStatus(isOnline: true);
+        if (message.toString().contains('pause'))
+          BlocProvider.of<LastActivateCubit>(context)
+              .updateMyActivateStatus(isOnline: false);
+      }
       return Future.value(message);
     });
-    super.initState();
   }
 
   bool isSearching = false;

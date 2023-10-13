@@ -40,10 +40,12 @@ class _ChatViewBodyState extends State<ChatViewBody> {
     return Column(
       children: [
         Expanded(
-          child: GestureDetector(onTap:(){
-            FocusScope.of(context).unfocus();
-          },
-            child: ChatUserBlocConsumer(scrollController: _scrollController),),
+          child: GestureDetector(
+            onTap: () {
+              FocusScope.of(context).unfocus();
+            },
+            child: ChatUserBlocConsumer(scrollController: _scrollController),
+          ),
         ),
         SendMessageSection(widget: widget, scrollController: _scrollController),
       ],
