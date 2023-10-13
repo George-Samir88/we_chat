@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:we_chat/features/chat/manager/cubits/last_activate_cubit/last_activate_cubit.dart';
 import 'package:we_chat/features/chat/presentation/widgets/send_message_section.dart';
 import 'package:we_chat/features/home/manager/models/user_model.dart';
 
@@ -24,6 +25,7 @@ class _ChatViewBodyState extends State<ChatViewBody> {
   @override
   void initState() {
     context.read<GetMessagesCubit>().getAllMessages(chatUser: widget.chatUser);
+    context.read<LastActivateCubit>().getUserInfo(chatUser: widget.chatUser);
     super.initState();
   }
 

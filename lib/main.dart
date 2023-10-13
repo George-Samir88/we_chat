@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:we_chat/core/custom_bloc_observer.dart';
 import 'package:we_chat/core/function/service_locator.dart';
+import 'package:we_chat/features/chat/manager/cubits/last_activate_cubit/last_activate_cubit.dart';
 import 'package:we_chat/features/home/manager/cubit/home_cubit/home_cubit.dart';
 import 'package:we_chat/features/splash/presentation/splash_view.dart';
 
@@ -16,9 +17,9 @@ void main() {
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
   //set screen portrait only
   SystemChrome.setPreferredOrientations(
-          [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
       .then((value) {
-    _initializeFirebase();
+    Future.wait([_initializeFirebase(),]);
     Bloc.observer = CustomBlocObserver();
     setupSharedPreferencesSingleton();
     runApp(const MyApp());
@@ -31,8 +32,15 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => HomeCubit(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => HomeCubit(),
+        ),
+        BlocProvider(
+          create: (context) => LastActivateCubit(),
+        ),
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'We Chat',
@@ -57,7 +65,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-_initializeFirebase() async {
+Future<void> _initializeFirebase() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
