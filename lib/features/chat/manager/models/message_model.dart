@@ -19,9 +19,18 @@ class MessageModel {
     msg = json['msg'].toString();
     toId = json['toId'].toString();
     read = json['read'].toString();
-    type = json['type'].toString() == Type.image.name ? Type.image : Type.text;
+    // type = json['type'].toString() == Type.image.name
+    //     ? Type.image
+    //     : Type.text;
     fromId = json['fromId'].toString();
     sent = json['sent'].toString();
+    if(Type.text.name == json['type'].toString()){
+      type = Type.text;
+    }else if(Type.voice.name == json['type'].toString()){
+      type = Type.voice;
+    }else{
+      type = Type.image;
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -36,4 +45,4 @@ class MessageModel {
   }
 }
 
-enum Type { text, image }
+enum Type { text, image, voice }

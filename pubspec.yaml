@@ -49,6 +49,8 @@ dependencies:
   firebase_storage: ^11.2.7
   intl: ^0.18.1
   emoji_picker_flutter: ^1.6.2
+  record: ^4.4.4
+  just_audio: ^0.9.35
 
 dev_dependencies:
   flutter_test:

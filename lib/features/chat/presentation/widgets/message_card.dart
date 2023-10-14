@@ -10,6 +10,7 @@ import 'package:we_chat/features/chat/manager/models/message_model.dart';
 
 import '../../../../core/global_var.dart';
 import '../../manager/cubits/get_messages_cubit/get_messages_cubit.dart';
+import 'package:just_audio/just_audio.dart';
 
 class SenderMessageCard extends StatelessWidget {
   const SenderMessageCard({super.key, required this.message});
@@ -72,26 +73,99 @@ class SenderMessageCard extends StatelessWidget {
                   ? Text(
                       message.msg,
                     )
-                  : ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: CachedNetworkImage(
-                        height: screenSize.height * 0.3,
-                        width: screenSize.height * 0.3,
-                        imageUrl: message.msg,
-                        fit: BoxFit.cover,
-                        progressIndicatorBuilder:
-                            (context, url, downloadProgress) => Center(
-                          child: CircularProgressIndicator(
-                              strokeWidth: 2, value: downloadProgress.progress),
-                        ),
-                        errorWidget: (context, url, error) =>
-                            Icon(CupertinoIcons.photo_fill),
-                      ),
-                    ),
+                  : (message.type == Type.image
+                      ? ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: CachedNetworkImage(
+                            height: screenSize.height * 0.3,
+                            width: screenSize.height * 0.3,
+                            imageUrl: message.msg,
+                            fit: BoxFit.cover,
+                            progressIndicatorBuilder:
+                                (context, url, downloadProgress) => Center(
+                              child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  value: downloadProgress.progress),
+                            ),
+                            errorWidget: (context, url, error) =>
+                                Icon(CupertinoIcons.photo_fill),
+                          ),
+                        )
+                      : Row(
+                          children: [
+                            CircleAvatar(
+                              backgroundColor: Colors.green,
+                              radius: screenSize.height * 0.03,
+                              child: Icon(
+                                Icons.keyboard_voice,
+                                size: screenSize.height * 0.04,
+                                color: Colors.white,
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(
+                                  left: screenSize.width * 0.02),
+                              child: Text('Voice Record'),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  left: screenSize.width * 0.08),
+                              child: CircleAvatar(
+                                backgroundColor: Colors.transparent,
+                                radius: screenSize.height * 0.03,
+                                child: Controls(audioPlayer: AudioPlayer()..setUrl(message.msg)),
+                                // child: IconButton(
+                                //   onPressed: () {
+                                //     audioPlayer.play();
+                                //   },
+                                //   splashRadius: screenSize.height * 0.033,
+                                //   icon: Icon(
+                                //     Icons.play_arrow,
+                                //     color: Colors.grey,
+                                //   ),
+                                //   iconSize: screenSize.height * 0.04,
+                                //   color: Colors.white,
+                                //   splashColor: Colors.grey,
+                                // ),
+                              ),
+                            ),
+                          ],
+                        )),
             ),
           ),
         ],
       ),
+    );
+  }
+}
+
+class Controls extends StatelessWidget {
+  const Controls({super.key, required this.audioPlayer});
+
+  final AudioPlayer audioPlayer;
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<PlayerState>(
+      stream: audioPlayer.playerStateStream,
+      builder: (context, snapshot) {
+        final playerState = snapshot.data;
+        final processingState = playerState?.processingState;
+        final playing = playerState?.playing;
+        if (!(playing ?? false)) {
+          return IconButton(
+              onPressed: () {
+                audioPlayer.play();
+              },
+              icon: Icon(Icons.play_arrow));
+        }
+        else if(processingState != ProcessingState.completed){
+          return IconButton(onPressed: (){
+            audioPlayer.pause();
+          }, icon: Icon(Icons.pause));
+        }
+        return Icon(Icons.play_arrow);
+      },
     );
   }
 }
@@ -132,22 +206,29 @@ class ReceiverMessageCard extends StatelessWidget {
                 ? Text(
                     message.msg,
                   )
-                : ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: CachedNetworkImage(
-                      height: screenSize.height * 0.3,
-                      width: screenSize.height * 0.3,
-                      imageUrl: message.msg,
-                      fit: BoxFit.cover,
-                      progressIndicatorBuilder:
-                          (context, url, downloadProgress) => Center(
-                        child: CircularProgressIndicator(
-                            strokeWidth: 2, value: downloadProgress.progress),
+                : message.type == Type.image
+                    ? ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: CachedNetworkImage(
+                          height: screenSize.height * 0.3,
+                          width: screenSize.height * 0.3,
+                          imageUrl: message.msg,
+                          fit: BoxFit.cover,
+                          progressIndicatorBuilder:
+                              (context, url, downloadProgress) => Center(
+                            child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                value: downloadProgress.progress),
+                          ),
+                          errorWidget: (context, url, error) =>
+                              Icon(CupertinoIcons.photo_fill),
+                        ),
+                      )
+                    : Container(
+                        child: Text(
+                          'Record',
+                        ),
                       ),
-                      errorWidget: (context, url, error) =>
-                          Icon(CupertinoIcons.photo_fill),
-                    ),
-                  ),
           ),
         ),
         Padding(

@@ -30,20 +30,20 @@ class GetMessagesCubit extends Cubit<GetMessagesState> {
     }
   }
 
-  Future<void> sendMessage(
-      {required ChatUser chatUser, required String message}) async {
-    final String dateTime = DateTime.now().toString();
-    final MessageModel messageModel = MessageModel(
-        msg: message,
-        toId: chatUser.id,
-        read: '',
-        type: Type.text,
-        fromId: firebaseAuth.currentUser!.uid,
-        sent: dateTime);
-    var ref = firestore
-        .collection('chats/${getConversationId(chatUser.id)}/messages/');
-    await ref.doc(dateTime).set(messageModel.toJson());
-  }
+  // Future<void> sendMessage(
+  //     {required ChatUser chatUser, required String message}) async {
+  //   final String dateTime = DateTime.now().toString();
+  //   final MessageModel messageModel = MessageModel(
+  //       msg: message,
+  //       toId: chatUser.id,
+  //       read: '',
+  //       type: Type.text,
+  //       fromId: firebaseAuth.currentUser!.uid,
+  //       sent: dateTime);
+  //   var ref = firestore
+  //       .collection('chats/${getConversationId(chatUser.id)}/messages/');
+  //   await ref.doc(dateTime).set(messageModel.toJson());
+  // }
 }
 
 //we will follow this pattern

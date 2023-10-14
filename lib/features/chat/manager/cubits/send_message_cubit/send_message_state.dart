@@ -22,3 +22,29 @@ class PickImageError extends SendMessageState {
 
   PickImageError({required this.error});
 }
+
+class StartRecordingAudio extends SendMessageState {}
+
+class StartRecordingAudioError extends SendMessageState {
+  final String error;
+
+  StartRecordingAudioError({required this.error});
+}
+
+class IsRecordingAudio extends SendMessageState {}
+
+class StopRecordingAudio extends SendMessageState {}
+
+class StopRecordingAudioError extends SendMessageState {
+  final String error;
+
+  StopRecordingAudioError({required this.error});
+}
+
+class AudioPlayerStart extends SendMessageState {}
+
+class AudioPlayerError extends SendMessageState {
+  final String error;
+
+  AudioPlayerError({required this.error});
+}

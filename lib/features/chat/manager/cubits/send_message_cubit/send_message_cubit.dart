@@ -9,9 +9,14 @@ import '../../../../../core/global_var.dart';
 import '../../../../home/manager/models/user_model.dart';
 import '../../models/message_model.dart';
 import '../get_messages_cubit/get_messages_cubit.dart';
+import 'package:record/record.dart';
 
 class SendMessageCubit extends Cubit<SendMessageState> {
   SendMessageCubit() : super(SendMessageInitial());
+  Record record = Record();
+  // AudioPlayer audioPlayer = AudioPlayer();
+  bool isRecording = false;
+  String? audioPath;
 
   Future<void> sendMessage(
       {required ChatUser chatUser,
@@ -77,4 +82,57 @@ class SendMessageCubit extends Cubit<SendMessageState> {
       return null;
     }
   }
+
+  Future<void> sendVoiceMessage(
+      {required ChatUser chatUser, required File file}) async {
+    var extension = file.path.split('.').last;
+    var ref = firebaseStorage.ref().child(
+        'chat_voice/${getConversationId(chatUser.id)}/${DateTime.now()}.${extension}');
+    await ref
+        .putFile(
+      file,
+      SettableMetadata(contentType: 'voice/$extension'),
+    )
+        .then((p0) {
+      print(p0.bytesTransferred / 1000);
+    });
+    String voiceUrl = await ref.getDownloadURL();
+    await sendMessage(chatUser: chatUser, message: voiceUrl, type: Type.voice);
+  }
+
+  Future<void> startRecording() async {
+    try {
+      if (await record.hasPermission()) {
+        await record.start();
+        isRecording = true;
+        emit(IsRecordingAudio());
+      }
+    } catch (err) {
+      print('here error' + err.toString());
+      emit(StartRecordingAudioError(error: err.toString()));
+    }
+  }
+
+  Future<void> stopRecord() async {
+    try {
+      String? path = await record.stop();
+      isRecording = false;
+      audioPath = path!;
+      emit(StopRecordingAudio());
+    } catch (err) {
+      print('here an error occurred' + err.toString());
+      emit(StopRecordingAudioError(error: err.toString()));
+    }
+  }
+
+  // Future<void> playRecord({required String? path}) async {
+  //   try {
+  //     Source urlSource = UrlSource(path!);
+  //     await audioPlayer.play(urlSource);
+  //     emit(AudioPlayerStart());
+  //   } catch (err) {
+  //     print('here an error occurred ' + err.toString());
+  //     emit(AudioPlayerError(error: err.toString()));
+  //   }
+  // }
 }
