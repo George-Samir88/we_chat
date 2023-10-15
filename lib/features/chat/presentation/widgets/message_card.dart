@@ -1,3 +1,4 @@
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,8 @@ import 'package:we_chat/features/chat/manager/models/message_model.dart';
 import '../../../../core/global_var.dart';
 import '../../manager/cubits/get_messages_cubit/get_messages_cubit.dart';
 import 'package:just_audio/just_audio.dart';
+
+import 'controls_audio.dart';
 
 class SenderMessageCard extends StatelessWidget {
   const SenderMessageCard({super.key, required this.message});
@@ -102,31 +105,15 @@ class SenderMessageCard extends StatelessWidget {
                                 color: Colors.white,
                               ),
                             ),
-                            Container(
-                              margin: EdgeInsets.only(
-                                  left: screenSize.width * 0.02),
-                              child: Text('Voice Record'),
-                            ),
                             Padding(
                               padding: EdgeInsets.only(
                                   left: screenSize.width * 0.08),
                               child: CircleAvatar(
                                 backgroundColor: Colors.transparent,
                                 radius: screenSize.height * 0.03,
-                                child: Controls(audioPlayer: AudioPlayer()..setUrl(message.msg)),
-                                // child: IconButton(
-                                //   onPressed: () {
-                                //     audioPlayer.play();
-                                //   },
-                                //   splashRadius: screenSize.height * 0.033,
-                                //   icon: Icon(
-                                //     Icons.play_arrow,
-                                //     color: Colors.grey,
-                                //   ),
-                                //   iconSize: screenSize.height * 0.04,
-                                //   color: Colors.white,
-                                //   splashColor: Colors.grey,
-                                // ),
+                                child: Controls(
+                                    audioPlayer: AudioPlayer()
+                                      ..setUrl(message.msg)),
                               ),
                             ),
                           ],
@@ -135,37 +122,6 @@ class SenderMessageCard extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-}
-
-class Controls extends StatelessWidget {
-  const Controls({super.key, required this.audioPlayer});
-
-  final AudioPlayer audioPlayer;
-
-  @override
-  Widget build(BuildContext context) {
-    return StreamBuilder<PlayerState>(
-      stream: audioPlayer.playerStateStream,
-      builder: (context, snapshot) {
-        final playerState = snapshot.data;
-        final processingState = playerState?.processingState;
-        final playing = playerState?.playing;
-        if (!(playing ?? false)) {
-          return IconButton(
-              onPressed: () {
-                audioPlayer.play();
-              },
-              icon: Icon(Icons.play_arrow));
-        }
-        else if(processingState != ProcessingState.completed){
-          return IconButton(onPressed: (){
-            audioPlayer.pause();
-          }, icon: Icon(Icons.pause));
-        }
-        return Icon(Icons.play_arrow);
-      },
     );
   }
 }

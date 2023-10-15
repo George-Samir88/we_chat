@@ -209,13 +209,31 @@ class _SendMessageSectionState extends State<SendMessageSection> {
                         backgroundColor: Colors.green,
                         radius: screenSize.height * 0.03,
                         child: IconButton(
+                          onPressed: blocHelper.startRecording,
+                          splashRadius: screenSize.height * 0.033,
+                          icon: Icon(
+                            Icons.keyboard_voice_rounded,
+                          ),
+                          iconSize: screenSize.height * 0.04,
+                          color: Colors.white,
+                          splashColor: Colors.grey,
+                        ),
+                      ),
+
+                      SizedBox(
+                        width: screenSize.width * 0.01,
+                      ),
+                      CircleAvatar(
+                        backgroundColor: Colors.green,
+                        radius: screenSize.height * 0.03,
+                        child: IconButton(
                           onPressed: () async {
                             if (textEditingController.text.isNotEmpty) {
                               await BlocProvider.of<SendMessageCubit>(context)
                                   .sendMessage(
-                                      chatUser: widget.widget.chatUser,
-                                      message: textEditingController.text,
-                                      type: Type.text)
+                                  chatUser: widget.widget.chatUser,
+                                  message: textEditingController.text,
+                                  type: Type.text)
                                   .then((value) {
                                 textEditingController.clear();
                               });
@@ -227,23 +245,6 @@ class _SendMessageSectionState extends State<SendMessageSection> {
                           splashRadius: screenSize.height * 0.033,
                           icon: Icon(
                             Icons.send,
-                          ),
-                          iconSize: screenSize.height * 0.04,
-                          color: Colors.white,
-                          splashColor: Colors.grey,
-                        ),
-                      ),
-                      SizedBox(
-                        width: screenSize.width * 0.01,
-                      ),
-                      CircleAvatar(
-                        backgroundColor: Colors.green,
-                        radius: screenSize.height * 0.03,
-                        child: IconButton(
-                          onPressed: blocHelper.startRecording,
-                          splashRadius: screenSize.height * 0.033,
-                          icon: Icon(
-                            Icons.keyboard_voice_rounded,
                           ),
                           iconSize: screenSize.height * 0.04,
                           color: Colors.white,
