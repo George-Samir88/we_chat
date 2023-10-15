@@ -6,9 +6,11 @@ import 'package:just_audio/just_audio.dart';
 import '../../../../core/global_var.dart';
 
 class Controls extends StatefulWidget {
-  const Controls({Key? key, required this.audioPlayer}) : super(key: key);
-
-  final AudioPlayer audioPlayer;
+  const Controls({
+    Key? key,
+    required this.audioUrl,
+  }) : super(key: key);
+  final String audioUrl;
 
   @override
   _ControlsState createState() => _ControlsState();
@@ -18,21 +20,37 @@ class _ControlsState extends State<Controls> {
   late StreamSubscription<PlayerState> _playerStateSubscription;
   late AudioPlayer _audioPlayer;
 
+
+  void _initializeAudioPlayer() {
+    _audioPlayer = AudioPlayer()..setUrl(widget.audioUrl);
+    _playerStateSubscription =
+        _audioPlayer.playerStateStream.listen((playerState) {
+          setState(() {
+            // Handle player state changes here
+          });
+        });
+  }
   @override
   void initState() {
     super.initState();
-    _audioPlayer = widget.audioPlayer;
-    _playerStateSubscription =
-        _audioPlayer.playerStateStream.listen((playerState) {
-      setState(() {
-        // Handle player state changes here
-      });
-    });
+    _initializeAudioPlayer();
+  }
+  @override
+  void didUpdateWidget(Controls oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.audioUrl != oldWidget.audioUrl) {
+      // Audio URL has changed, dispose of the old player and create a new one
+      _audioPlayer.dispose();
+      _playerStateSubscription.cancel();
+      _initializeAudioPlayer();
+    }
   }
 
   @override
   void dispose() {
     _playerStateSubscription.cancel();
+    _audioPlayer.dispose();
+
     super.dispose();
   }
 

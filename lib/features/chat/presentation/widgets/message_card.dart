@@ -11,7 +11,6 @@ import 'package:we_chat/features/chat/manager/models/message_model.dart';
 
 import '../../../../core/global_var.dart';
 import '../../manager/cubits/get_messages_cubit/get_messages_cubit.dart';
-import 'package:just_audio/just_audio.dart';
 
 import 'controls_audio.dart';
 
@@ -111,9 +110,8 @@ class SenderMessageCard extends StatelessWidget {
                               child: CircleAvatar(
                                 backgroundColor: Colors.transparent,
                                 radius: screenSize.height * 0.03,
-                                child: Controls(
-                                    audioPlayer: AudioPlayer()
-                                      ..setUrl(message.msg)),
+                                child: Controls(audioUrl: message.msg,
+                                    ),
                               ),
                             ),
                           ],
