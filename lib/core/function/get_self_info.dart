@@ -6,7 +6,7 @@ import '../../features/home/manager/models/user_model.dart';
 import '../global_var.dart';
 import 'add_user_to_firestore.dart';
 
-Future<void> getSelfInfo({required String uid , required context }) async {
+Future<void> getSelfInfo({required String uid, required context}) async {
   await firestore.collection('users').doc(uid).get().then((value) async {
     if (value.exists) {
       me = ChatUser.fromJson(value.data()!);

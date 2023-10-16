@@ -22,7 +22,7 @@ class _HomeViewState extends State<HomeView> {
   @override
   initState() {
     BlocProvider.of<HomeCubit>(context).getChatUsers();
-    getSelfInfo(uid: firebaseAuth.currentUser!.uid , context: context);
+    getSelfInfo(uid: firebaseAuth.currentUser!.uid, context: context);
     updateUserActivate();
     super.initState();
   }
