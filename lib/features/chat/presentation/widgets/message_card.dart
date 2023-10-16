@@ -158,31 +158,49 @@ class ReceiverMessageCard extends StatelessWidget {
             ),
             child: message.type == Type.text
                 ? Text(
-                    message.msg,
-                  )
-                : message.type == Type.image
-                    ? ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: CachedNetworkImage(
-                          height: screenSize.height * 0.3,
-                          width: screenSize.height * 0.3,
-                          imageUrl: message.msg,
-                          fit: BoxFit.cover,
-                          progressIndicatorBuilder:
-                              (context, url, downloadProgress) => Center(
-                            child: CircularProgressIndicator(
-                                strokeWidth: 2,
-                                value: downloadProgress.progress),
-                          ),
-                          errorWidget: (context, url, error) =>
-                              Icon(CupertinoIcons.photo_fill),
-                        ),
-                      )
-                    : Container(
-                        child: Text(
-                          'Record',
-                        ),
-                      ),
+              message.msg,
+            )
+                : (message.type == Type.image
+                ? ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: CachedNetworkImage(
+                height: screenSize.height * 0.3,
+                width: screenSize.height * 0.3,
+                imageUrl: message.msg,
+                fit: BoxFit.cover,
+                progressIndicatorBuilder:
+                    (context, url, downloadProgress) => Center(
+                  child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      value: downloadProgress.progress),
+                ),
+                errorWidget: (context, url, error) =>
+                    Icon(CupertinoIcons.photo_fill),
+              ),
+            )
+                : Row(
+              children: [
+                CircleAvatar(
+                  backgroundColor: Colors.green,
+                  radius: screenSize.height * 0.03,
+                  child: Icon(
+                    Icons.keyboard_voice,
+                    size: screenSize.height * 0.04,
+                    color: Colors.white,
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(
+                      left: screenSize.width * 0.08),
+                  child: CircleAvatar(
+                    backgroundColor: Colors.transparent,
+                    radius: screenSize.height * 0.03,
+                    child: Controls(audioUrl: message.msg,
+                    ),
+                  ),
+                ),
+              ],
+            )),
           ),
         ),
         Padding(
