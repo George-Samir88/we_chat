@@ -51,6 +51,7 @@ dependencies:
   emoji_picker_flutter: ^1.6.2
   record: ^4.4.4
   just_audio: ^0.9.35
+  firebase_messaging: ^14.6.9
 
 dev_dependencies:
   flutter_test:

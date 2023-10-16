@@ -32,6 +32,7 @@ class LastActivateCubit extends Cubit<LastActivateState> {
     firestore.collection('users').doc(firebaseAuth.currentUser!.uid).update({
       'last_active': DateTime.now().toString(),
       'is_online': isOnline,
+      'push_token': me!.pushToken,
     });
   }
 }

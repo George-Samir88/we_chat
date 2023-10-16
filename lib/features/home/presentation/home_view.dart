@@ -21,10 +21,8 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   @override
   initState() {
-    BlocProvider.of<LastActivateCubit>(context)
-        .updateMyActivateStatus(isOnline: true);
     BlocProvider.of<HomeCubit>(context).getChatUsers();
-    getSelfInfo(uid: firebaseAuth.currentUser!.uid);
+    getSelfInfo(uid: firebaseAuth.currentUser!.uid , context: context);
     updateUserActivate();
     super.initState();
   }
