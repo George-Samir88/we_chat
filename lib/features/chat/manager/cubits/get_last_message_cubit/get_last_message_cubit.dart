@@ -18,7 +18,7 @@ class GetLastMessageCubit extends Cubit<GetLastMessageState> {
           .limit(1)
           .snapshots()
           .listen((snapshot) {
-        if (snapshot.docs.isEmpty) {
+        if (snapshot.docs[0]['msg'].isEmpty) {
           emit(ChatGetLastMessageSuccess(messages: []));
         } else {
           List<MessageModel> messageModel;
