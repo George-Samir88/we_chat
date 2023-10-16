@@ -58,7 +58,7 @@ class ChatUserCard extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
                 subtitle: state is ChatGetLastMessageSuccess
-                    ? (state.messages.isNotEmpty
+                    ? (state.messages[0].msg.isNotEmpty
                         ? (state.messages[0].type == Type.text
                             ? Text(
                                 state.messages[0].msg,
@@ -68,23 +68,41 @@ class ChatUserCard extends StatelessWidget {
                                 ),
                                 maxLines: 1,
                               )
-                            : Row(
-                                children: [
-                                  Icon(
-                                    Icons.image,
-                                    size: screenSize.width * 0.06,
-                                  ),
-                                  SizedBox(
-                                    width: screenSize.width * 0.012,
-                                  ),
-                                  Text(
-                                    'Photo',
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                    ),
-                                  ),
-                                ],
-                              ))
+                            : (state.messages[0].type == Type.image
+                                ? Row(
+                                    children: [
+                                      Icon(
+                                        Icons.image,
+                                        size: screenSize.width * 0.06,
+                                      ),
+                                      SizedBox(
+                                        width: screenSize.width * 0.012,
+                                      ),
+                                      Text(
+                                        'Photo',
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                : Row(
+                                    children: [
+                                      Icon(
+                                        Icons.keyboard_voice_rounded,
+                                        size: screenSize.width * 0.06,
+                                      ),
+                                      SizedBox(
+                                        width: screenSize.width * 0.012,
+                                      ),
+                                      Text(
+                                        'voice',
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                    ],
+                                  )))
                         : Text(
                             user.about,
                             overflow: TextOverflow.ellipsis,
