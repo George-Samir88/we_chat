@@ -39,6 +39,7 @@ class SendMessageCubit extends Cubit<SendMessageState> {
       var ref = firestore
           .collection('chats/${getConversationId(chatUser.id)}/messages/');
       await ref.doc(dateTime).set(messageModel.toJson());
+      //for sending notification
       dioHelper.post(data: {
         "to": chatUser.pushToken,
         "notification": {

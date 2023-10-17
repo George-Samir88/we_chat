@@ -10,7 +10,9 @@ Future<void> getSelfInfo({required String uid, required context}) async {
   await firestore.collection('users').doc(uid).get().then((value) async {
     if (value.exists) {
       me = ChatUser.fromJson(value.data()!);
+      //for setting push_token
       await getFirebaseMessagingToken();
+      //for setting last_active true
       BlocProvider.of<LastActivateCubit>(context)
           .updateMyActivateStatus(isOnline: true);
     } else {
