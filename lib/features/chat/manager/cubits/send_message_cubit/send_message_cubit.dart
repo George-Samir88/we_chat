@@ -1,8 +1,10 @@
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:we_chat/core/utils/dio_helper.dart';
 import 'package:we_chat/features/chat/manager/cubits/send_message_cubit/send_message_state.dart';
 
 import '../../../../../core/global_var.dart';
@@ -14,9 +16,11 @@ import 'package:record/record.dart';
 class SendMessageCubit extends Cubit<SendMessageState> {
   SendMessageCubit() : super(SendMessageInitial());
   Record record = Record();
+
   // AudioPlayer audioPlayer = AudioPlayer();
   bool isRecording = false;
   String? audioPath;
+  DioHelper dioHelper = DioHelper(Dio());
 
   Future<void> sendMessage(
       {required ChatUser chatUser,
@@ -35,6 +39,15 @@ class SendMessageCubit extends Cubit<SendMessageState> {
       var ref = firestore
           .collection('chats/${getConversationId(chatUser.id)}/messages/');
       await ref.doc(dateTime).set(messageModel.toJson());
+      dioHelper.post(data: {
+        "to": chatUser.pushToken,
+        "notification": {
+          "title": chatUser.name,
+          "body": type == Type.text
+              ? message
+              : (type == Type.image ? 'Photo' : 'Voice')
+        }
+      });
       emit(SendMessageSuccess());
     } catch (err) {
       emit(SendMessageError(error: err.toString()));
@@ -125,14 +138,14 @@ class SendMessageCubit extends Cubit<SendMessageState> {
     }
   }
 
-  // Future<void> playRecord({required String? path}) async {
-  //   try {
-  //     Source urlSource = UrlSource(path!);
-  //     await audioPlayer.play(urlSource);
-  //     emit(AudioPlayerStart());
-  //   } catch (err) {
-  //     print('here an error occurred ' + err.toString());
-  //     emit(AudioPlayerError(error: err.toString()));
-  //   }
-  // }
+// Future<void> playRecord({required String? path}) async {
+//   try {
+//     Source urlSource = UrlSource(path!);
+//     await audioPlayer.play(urlSource);
+//     emit(AudioPlayerStart());
+//   } catch (err) {
+//     print('here an error occurred ' + err.toString());
+//     emit(AudioPlayerError(error: err.toString()));
+//   }
+// }
 }

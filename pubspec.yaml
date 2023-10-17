@@ -52,6 +52,7 @@ dependencies:
   record: ^4.4.4
   just_audio: ^0.9.35
   firebase_messaging: ^14.6.9
+  dio: ^5.3.3
 
 dev_dependencies:
   flutter_test:
