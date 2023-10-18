@@ -7,6 +7,11 @@ import 'get_messages_state.dart';
 class GetMessagesCubit extends Cubit<GetMessagesState> {
   GetMessagesCubit() : super(ChatGetMessagesInitial());
 
+  @override
+  void emit(GetMessagesState state) {
+    if (!isClosed) super.emit(state);
+  }
+
   void getAllMessages({required ChatUser chatUser}) {
     emit(ChatGetMessagesLoading());
     try {
@@ -30,27 +35,28 @@ class GetMessagesCubit extends Cubit<GetMessagesState> {
     }
   }
 
-  // Future<void> sendMessage(
-  //     {required ChatUser chatUser, required String message}) async {
-  //   final String dateTime = DateTime.now().toString();
-  //   final MessageModel messageModel = MessageModel(
-  //       msg: message,
-  //       toId: chatUser.id,
-  //       read: '',
-  //       type: Type.text,
-  //       fromId: firebaseAuth.currentUser!.uid,
-  //       sent: dateTime);
-  //   var ref = firestore
-  //       .collection('chats/${getConversationId(chatUser.id)}/messages/');
-  //   await ref.doc(dateTime).set(messageModel.toJson());
-  // }
+// Future<void> sendMessage(
+//     {required ChatUser chatUser, required String message}) async {
+//   final String dateTime = DateTime.now().toString();
+//   final MessageModel messageModel = MessageModel(
+//       msg: message,
+//       toId: chatUser.id,
+//       read: '',
+//       type: Type.text,
+//       fromId: firebaseAuth.currentUser!.uid,
+//       sent: dateTime);
+//   var ref = firestore
+//       .collection('chats/${getConversationId(chatUser.id)}/messages/');
+//   await ref.doc(dateTime).set(messageModel.toJson());
+// }
 }
 
 //we will follow this pattern
 //chats (collection) ==> conversation_id (doc) ==> messages (collection) ==> message (doc)
-String getConversationId(String id) => firebaseAuth.currentUser!.uid.hashCode <= id.hashCode
-    ? '${firebaseAuth.currentUser!.uid}_$id'
-    : '${id}_${firebaseAuth.currentUser!.uid}';
+String getConversationId(String id) =>
+    firebaseAuth.currentUser!.uid.hashCode <= id.hashCode
+        ? '${firebaseAuth.currentUser!.uid}_$id'
+        : '${id}_${firebaseAuth.currentUser!.uid}';
 
 Future<void> markMessageAsRead({required MessageModel messageModel}) async {
   var time = DateTime.now().toString();

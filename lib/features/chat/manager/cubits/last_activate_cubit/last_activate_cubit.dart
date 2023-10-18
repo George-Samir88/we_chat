@@ -7,6 +7,11 @@ import 'last_activate_state.dart';
 class LastActivateCubit extends Cubit<LastActivateState> {
   LastActivateCubit() : super(LastActivateInitial());
 
+  @override
+  void emit(LastActivateState state) {
+    if (!isClosed) super.emit(state);
+  }
+
   ChatUser? userActivate;
 
   Future<void> getUserInfo({required ChatUser chatUser}) async {

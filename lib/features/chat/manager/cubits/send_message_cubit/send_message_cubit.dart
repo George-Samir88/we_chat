@@ -15,6 +15,12 @@ import 'package:record/record.dart';
 
 class SendMessageCubit extends Cubit<SendMessageState> {
   SendMessageCubit() : super(SendMessageInitial());
+
+  @override
+  void emit(SendMessageState state) {
+    if (!isClosed) super.emit(state);
+  }
+
   Record record = Record();
 
   // AudioPlayer audioPlayer = AudioPlayer();
@@ -46,8 +52,14 @@ class SendMessageCubit extends Cubit<SendMessageState> {
           "title": chatUser.name,
           "body": type == Type.text
               ? message
-              : (type == Type.image ? 'Photo' : 'Voice')
-        }
+              : (type == Type.image ? 'Photo' : 'Voice'),
+          "android_channel_id": "chats",
+        },
+        "data": {
+          "some date": "User id ${me!.id}",
+        },
+        "priority": "high",
+        "content_available": true,
       });
       emit(SendMessageSuccess());
     } catch (err) {

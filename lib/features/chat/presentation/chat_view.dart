@@ -28,11 +28,11 @@ class ChatView extends StatelessWidget {
         ),
         body: MultiBlocProvider(
           providers: [
-            BlocProvider.value(
-              value: GetMessagesCubit(),
+            BlocProvider(
+              create:  (context) => GetMessagesCubit(),
             ),
-            BlocProvider.value(
-              value: SendMessageCubit(),
+            BlocProvider(
+              create:  (context) => SendMessageCubit(),
             ),
           ],
           child: ChatViewBody(

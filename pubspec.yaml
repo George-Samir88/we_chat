@@ -53,6 +53,7 @@ dependencies:
   just_audio: ^0.9.35
   firebase_messaging: ^14.6.9
   dio: ^5.3.3
+  flutter_notification_channel: ^2.0.0
 
 dev_dependencies:
   flutter_test:
