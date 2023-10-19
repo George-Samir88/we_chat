@@ -1,4 +1,3 @@
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +12,7 @@ import '../../../../core/global_var.dart';
 import '../../manager/cubits/get_messages_cubit/get_messages_cubit.dart';
 
 import 'controls_audio.dart';
+import 'custom_bottom_sheet_fun.dart';
 
 class SenderMessageCard extends StatelessWidget {
   const SenderMessageCard({super.key, required this.message});
@@ -28,30 +28,127 @@ class SenderMessageCard extends StatelessWidget {
               message: 'An error occurred ' + state.error,
               backgroundColor: Colors.red);
       },
+      child: GestureDetector(
+        onLongPress: () {
+          customShowModalBottomSheet(
+              context: context, isMe: true, type: message.type);
+        },
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                SizedBox(
+                  width: screenSize.width * 0.02,
+                ),
+                if (message.read.isNotEmpty)
+                  Icon(
+                    Icons.done_all_rounded,
+                    size: 24,
+                    color: Colors.blue,
+                  ),
+                if (message.read.isNotEmpty)
+                  SizedBox(
+                    width: 4,
+                  ),
+                Text(
+                  DateFormat.jm().format(DateTime.parse(message.sent)),
+                  style: TextStyle(color: Colors.black54, fontSize: 13),
+                ),
+              ],
+            ),
+            Flexible(
+              child: Container(
+                margin: EdgeInsets.only(
+                  top: screenSize.height * 0.015,
+                  left: screenSize.height * 0.02,
+                  right: screenSize.height * 0.02,
+                ),
+                padding: message.type == Type.text
+                    ? EdgeInsets.all(screenSize.height * 0.02)
+                    : EdgeInsets.all(screenSize.height * 0.01),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.lightGreen),
+                  color: Color.fromARGB(255, 218, 255, 176),
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
+                    bottomLeft: Radius.circular(20),
+                  ),
+                ),
+                child: message.type == Type.text
+                    ? Text(
+                        message.msg,
+                      )
+                    : (message.type == Type.image
+                        ? ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: CachedNetworkImage(
+                              height: screenSize.height * 0.3,
+                              width: screenSize.height * 0.3,
+                              imageUrl: message.msg,
+                              fit: BoxFit.cover,
+                              progressIndicatorBuilder:
+                                  (context, url, downloadProgress) => Center(
+                                child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    value: downloadProgress.progress),
+                              ),
+                              errorWidget: (context, url, error) =>
+                                  Icon(CupertinoIcons.photo_fill),
+                            ),
+                          )
+                        : Row(
+                            children: [
+                              CircleAvatar(
+                                backgroundColor: Colors.green,
+                                radius: screenSize.height * 0.03,
+                                child: Icon(
+                                  Icons.keyboard_voice,
+                                  size: screenSize.height * 0.04,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(
+                                    left: screenSize.width * 0.08),
+                                child: CircleAvatar(
+                                  backgroundColor: Colors.transparent,
+                                  radius: screenSize.height * 0.03,
+                                  child: Controls(
+                                    audioUrl: message.msg,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class ReceiverMessageCard extends StatelessWidget {
+  const ReceiverMessageCard({super.key, required this.message});
+
+  final MessageModel message;
+
+  @override
+  Widget build(BuildContext context) {
+    if (message.read.isEmpty) {
+      markMessageAsRead(messageModel: message);
+    }
+    return GestureDetector(
+      onLongPress: () {
+        customShowModalBottomSheet(
+            context: context, isMe: false, type: message.type);
+      },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Row(
-            children: [
-              SizedBox(
-                width: screenSize.width * 0.02,
-              ),
-              if (message.read.isNotEmpty)
-                Icon(
-                  Icons.done_all_rounded,
-                  size: 24,
-                  color: Colors.blue,
-                ),
-              if (message.read.isNotEmpty)
-                SizedBox(
-                  width: 4,
-                ),
-              Text(
-                DateFormat.jm().format(DateTime.parse(message.sent)),
-                style: TextStyle(color: Colors.black54, fontSize: 13),
-              ),
-            ],
-          ),
           Flexible(
             child: Container(
               margin: EdgeInsets.only(
@@ -63,12 +160,12 @@ class SenderMessageCard extends StatelessWidget {
                   ? EdgeInsets.all(screenSize.height * 0.02)
                   : EdgeInsets.all(screenSize.height * 0.01),
               decoration: BoxDecoration(
-                border: Border.all(color: Colors.lightGreen),
-                color: Color.fromARGB(255, 218, 255, 176),
+                border: Border.all(color: Colors.lightBlue),
+                color: Color.fromARGB(255, 221, 245, 255),
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(20),
                   topRight: Radius.circular(20),
-                  bottomLeft: Radius.circular(20),
+                  bottomRight: Radius.circular(20),
                 ),
               ),
               child: message.type == Type.text
@@ -110,109 +207,26 @@ class SenderMessageCard extends StatelessWidget {
                               child: CircleAvatar(
                                 backgroundColor: Colors.transparent,
                                 radius: screenSize.height * 0.03,
-                                child: Controls(audioUrl: message.msg,
-                                    ),
+                                child: Controls(
+                                  audioUrl: message.msg,
+                                ),
                               ),
                             ),
                           ],
                         )),
             ),
           ),
+          Padding(
+            padding: EdgeInsets.only(
+              right: screenSize.width * 0.02,
+            ),
+            child: Text(
+              DateFormat.jm().format(DateTime.parse(message.sent)),
+              style: TextStyle(color: Colors.black54, fontSize: 13),
+            ),
+          ),
         ],
       ),
-    );
-  }
-}
-
-class ReceiverMessageCard extends StatelessWidget {
-  const ReceiverMessageCard({super.key, required this.message});
-
-  final MessageModel message;
-
-  @override
-  Widget build(BuildContext context) {
-    if (message.read.isEmpty) {
-      markMessageAsRead(messageModel: message);
-    }
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Flexible(
-          child: Container(
-            margin: EdgeInsets.only(
-              top: screenSize.height * 0.015,
-              left: screenSize.height * 0.02,
-              right: screenSize.height * 0.02,
-            ),
-            padding: message.type == Type.text
-                ? EdgeInsets.all(screenSize.height * 0.02)
-                : EdgeInsets.all(screenSize.height * 0.01),
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.lightBlue),
-              color: Color.fromARGB(255, 221, 245, 255),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20),
-                topRight: Radius.circular(20),
-                bottomRight: Radius.circular(20),
-              ),
-            ),
-            child: message.type == Type.text
-                ? Text(
-              message.msg,
-            )
-                : (message.type == Type.image
-                ? ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: CachedNetworkImage(
-                height: screenSize.height * 0.3,
-                width: screenSize.height * 0.3,
-                imageUrl: message.msg,
-                fit: BoxFit.cover,
-                progressIndicatorBuilder:
-                    (context, url, downloadProgress) => Center(
-                  child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      value: downloadProgress.progress),
-                ),
-                errorWidget: (context, url, error) =>
-                    Icon(CupertinoIcons.photo_fill),
-              ),
-            )
-                : Row(
-              children: [
-                CircleAvatar(
-                  backgroundColor: Colors.green,
-                  radius: screenSize.height * 0.03,
-                  child: Icon(
-                    Icons.keyboard_voice,
-                    size: screenSize.height * 0.04,
-                    color: Colors.white,
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(
-                      left: screenSize.width * 0.08),
-                  child: CircleAvatar(
-                    backgroundColor: Colors.transparent,
-                    radius: screenSize.height * 0.03,
-                    child: Controls(audioUrl: message.msg,
-                    ),
-                  ),
-                ),
-              ],
-            )),
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.only(
-            right: screenSize.width * 0.02,
-          ),
-          child: Text(
-            DateFormat.jm().format(DateTime.parse(message.sent)),
-            style: TextStyle(color: Colors.black54, fontSize: 13),
-          ),
-        ),
-      ],
     );
   }
 }
