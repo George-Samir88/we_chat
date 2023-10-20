@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
+import 'package:we_chat/core/widgets/custom_alert_message.dart';
+import 'package:we_chat/features/chat/manager/cubits/get_messages_cubit/get_messages_cubit.dart';
 import 'package:we_chat/features/chat/manager/models/message_model.dart';
 
 import '../../../../core/global_var.dart';
@@ -7,7 +11,7 @@ import 'option_item.dart';
 void customShowModalBottomSheet({
   required context,
   required bool isMe,
-  required Type type,
+  required MessageModel messageModel,
 }) {
   showModalBottomSheet(
     context: context,
@@ -37,14 +41,23 @@ void customShowModalBottomSheet({
             thickness: 2.5,
           ),
           //for copy text or save image
-          type == Type.text
+          messageModel.type == Type.text
               ? OptionItem(
                   icon: Icons.copy_outlined,
                   text: '   Copy Text',
                   iconColor: Colors.blue,
-                  onTap: () {},
+                  onTap: () async {
+                    await Clipboard.setData(
+                            ClipboardData(text: messageModel.msg))
+                        .then((value) {
+                      Navigator.pop(context);
+                      customAlertMessage(
+                          message: 'Message copied!',
+                          backgroundColor: Colors.green);
+                    });
+                  },
                 )
-              : (type == Type.image
+              : (messageModel.type == Type.image
                   ? OptionItem(
                       icon: Icons.download,
                       text: '   Save Image',
@@ -63,7 +76,7 @@ void customShowModalBottomSheet({
               indent: screenSize.width * 0.1,
               thickness: 1,
             ),
-          if (type == Type.text && isMe == true)
+          if (messageModel.type == Type.text && isMe == true)
             //for edit message
             OptionItem(
               icon: Icons.edit,
@@ -77,7 +90,14 @@ void customShowModalBottomSheet({
               icon: Icons.delete_forever_rounded,
               text: '   Delete Message',
               iconColor: Colors.red,
-              onTap: () {},
+              onTap: () {
+                deleteMessage(messageModel: messageModel).then((value) {
+                  Navigator.pop(context);
+                  customAlertMessage(
+                      message: 'Message deleted successfully',
+                      backgroundColor: Colors.green);
+                });
+              },
             ),
           Divider(
             endIndent: screenSize.width * 0.1,
@@ -87,14 +107,15 @@ void customShowModalBottomSheet({
           //for showing when message send at
           OptionItem(
             icon: Icons.remove_red_eye_outlined,
-            text: '   Sent At:',
+            text: '   Sent At: ${formatDate(messageModel.sent)}',
             iconColor: Colors.blue,
             onTap: () {},
           ),
           //for showing when message read at
           OptionItem(
             icon: Icons.remove_red_eye_outlined,
-            text: '   Read At:',
+            text:
+                '   Read At: ${(messageModel.read.isEmpty ? "Haven't read yet" : formatDate(messageModel.read))}',
             iconColor: Colors.green,
             onTap: () {},
           ),
@@ -102,4 +123,28 @@ void customShowModalBottomSheet({
       );
     },
   );
+}
+
+String formatDate(String time) {
+  DateTime now = DateTime.now();
+  if (now.day == DateTime.parse(time).day &&
+      now.month == DateTime.parse(time).month &&
+      now.year == DateTime.parse(time).year) {
+    return DateFormat.jm().format(DateTime.parse(time));
+  }
+  DateFormat dateFormat = DateFormat("d MMM", 'en_US');
+
+  return dateFormat.format(DateTime.parse(time)) +
+      ', ' +
+      DateFormat.jm().format(DateTime.parse(time));
+}
+
+Future<void> deleteMessage({required MessageModel messageModel}) async {
+  await firestore
+      .collection('chats/${getConversationId(messageModel.toId)}/messages')
+      .doc(messageModel.sent)
+      .delete();
+  if (messageModel.type == Type.image || messageModel.type == Type.voice) {
+    firebaseStorage.refFromURL(messageModel.msg).delete();
+  }
 }

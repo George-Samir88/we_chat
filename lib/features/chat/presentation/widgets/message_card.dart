@@ -31,7 +31,10 @@ class SenderMessageCard extends StatelessWidget {
       child: GestureDetector(
         onLongPress: () {
           customShowModalBottomSheet(
-              context: context, isMe: true, type: message.type);
+            context: context,
+            isMe: true,
+            messageModel: message,
+          );
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -144,7 +147,7 @@ class ReceiverMessageCard extends StatelessWidget {
     return GestureDetector(
       onLongPress: () {
         customShowModalBottomSheet(
-            context: context, isMe: false, type: message.type);
+            context: context, isMe: false, messageModel: message);
       },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
