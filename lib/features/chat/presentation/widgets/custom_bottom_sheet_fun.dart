@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:gallery_saver/gallery_saver.dart';
 import 'package:intl/intl.dart';
 import 'package:we_chat/core/widgets/custom_alert_message.dart';
 import 'package:we_chat/features/chat/manager/cubits/get_messages_cubit/get_messages_cubit.dart';
@@ -62,7 +63,19 @@ void customShowModalBottomSheet({
                       icon: Icons.download,
                       text: '   Save Image',
                       iconColor: Colors.blue,
-                      onTap: () {},
+                      onTap: () {
+                        try{
+                          GallerySaver.saveImage(messageModel.msg , albumName: 'We Chat').then((success) {
+                            if(success!=null && success){
+                              Navigator.pop(context);
+                              customAlertMessage(message: 'Image Saved!', backgroundColor: Colors.green);
+                            }
+                          });
+                        }catch(err){
+                          Navigator.pop(context);
+                          customAlertMessage(message: 'An error occurred', backgroundColor: Colors.red);
+                        }
+                      },
                     )
                   : OptionItem(
                       icon: Icons.download,

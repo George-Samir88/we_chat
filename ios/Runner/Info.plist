@@ -69,5 +69,7 @@
             <key>NSAllowsArbitraryLoads</key>
             <true/>
         </dict>
+    <key>NSPhotoLibraryAddUsageDescription</key>
+    <string>We need access to your photo library to save images or videos.</string>
 </dict>
 </plist>
