@@ -45,6 +45,8 @@ class SendMessageCubit extends Cubit<SendMessageState> {
       var ref = firestore
           .collection('chats/${getConversationId(chatUser.id)}/messages/');
       await ref.doc(dateTime).set(messageModel.toJson());
+      //for making record button is show after send message
+      showSendButton = false;
       //for sending notification
       dioHelper.post(data: {
         "to": chatUser.pushToken,
@@ -149,6 +151,13 @@ class SendMessageCubit extends Cubit<SendMessageState> {
       print('here an error occurred' + err.toString());
       emit(StopRecordingAudioError(error: err.toString()));
     }
+  }
+
+  bool showSendButton = false;
+
+  void toggleSendAndRecordButton() {
+    showSendButton = !showSendButton;
+    emit(ToggleSendAndRecordButton());
   }
 
 // Future<void> playRecord({required String? path}) async {

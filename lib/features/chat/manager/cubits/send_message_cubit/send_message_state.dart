@@ -48,3 +48,5 @@ class AudioPlayerError extends SendMessageState {
 
   AudioPlayerError({required this.error});
 }
+
+class ToggleSendAndRecordButton extends SendMessageState {}
