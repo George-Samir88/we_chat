@@ -1,7 +1,12 @@
+import 'dart:io';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:we_chat/core/widgets/custom_alert_message.dart';
 import 'package:we_chat/features/chat/manager/cubits/get_messages_cubit/get_messages_cubit.dart';
 import 'package:we_chat/features/chat/manager/models/message_model.dart';
@@ -64,16 +69,22 @@ void customShowModalBottomSheet({
                       text: '   Save Image',
                       iconColor: Colors.blue,
                       onTap: () {
-                        try{
-                          GallerySaver.saveImage(messageModel.msg , albumName: 'We Chat').then((success) {
-                            if(success!=null && success){
+                        try {
+                          GallerySaver.saveImage(messageModel.msg,
+                                  albumName: 'We Chat')
+                              .then((success) {
+                            if (success != null && success) {
                               Navigator.pop(context);
-                              customAlertMessage(message: 'Image Saved!', backgroundColor: Colors.green);
+                              customAlertMessage(
+                                  message: 'Image Saved!',
+                                  backgroundColor: Colors.green);
                             }
                           });
-                        }catch(err){
+                        } catch (err) {
                           Navigator.pop(context);
-                          customAlertMessage(message: 'An error occurred', backgroundColor: Colors.red);
+                          customAlertMessage(
+                              message: 'An error occurred',
+                              backgroundColor: Colors.red);
                         }
                       },
                     )
@@ -81,7 +92,12 @@ void customShowModalBottomSheet({
                       icon: Icons.download,
                       text: '   Save Audio',
                       iconColor: Colors.blue,
-                      onTap: () {},
+                      onTap: () async {
+                        await downloadAndSaveAudio(
+                                url: messageModel.msg,
+                                fileName: messageModel.sent)
+                            .then((value) => Navigator.pop(context));
+                      },
                     )),
           if (isMe == true)
             Divider(
@@ -159,5 +175,42 @@ Future<void> deleteMessage({required MessageModel messageModel}) async {
       .delete();
   if (messageModel.type == Type.image || messageModel.type == Type.voice) {
     firebaseStorage.refFromURL(messageModel.msg).delete();
+  }
+}
+
+Dio dio = Dio();
+
+Future<void> downloadAndSaveAudio(
+    {required String url, required String fileName}) async {
+  // Check and request the WRITE_EXTERNAL_STORAGE permission
+  var status = await Permission.storage.status;
+  if (!status.isGranted) {
+    await Permission.storage.request();
+  }
+
+  try {
+    // Get the external storage directory
+    final directory = await getExternalStorageDirectory();
+    final filePath = '${directory!.path}/$fileName';
+
+    // Download the audio file using Dio
+    await dio.download(url, filePath);
+
+    // Check if the file was successfully downloaded
+    File audioFile = File(filePath);
+    if (audioFile.existsSync()) {
+      // File downloaded successfully
+      print('Audio file saved to: $filePath');
+      customAlertMessage(message: 'saved', backgroundColor: Colors.green);
+    } else {
+      // Handle download failure
+      print('Failed to download audio.');
+      customAlertMessage(
+          message: 'Download failed', backgroundColor: Colors.red);
+    }
+  } catch (e) {
+    // Handle any exceptions that may occur during the download
+    print('Error while downloading audio: $e');
+    customAlertMessage(message: 'Error: $e', backgroundColor: Colors.red);
   }
 }
