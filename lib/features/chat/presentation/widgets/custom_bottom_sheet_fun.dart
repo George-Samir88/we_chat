@@ -7,6 +7,7 @@ import 'package:we_chat/features/chat/manager/models/message_model.dart';
 
 import '../../../../core/global_var.dart';
 import '../../manager/functions.dart';
+import 'custom_show_alert_dialog.dart';
 import 'option_item.dart';
 
 void customShowModalBottomSheet({
@@ -106,7 +107,11 @@ void customShowModalBottomSheet({
               icon: Icons.edit,
               text: '   Edit Message',
               iconColor: Colors.blue,
-              onTap: () {},
+              onTap: () {
+                Navigator.pop(context);
+                showAlertDialogForUpdateMessage(
+                    message: messageModel, context: context);
+              },
             ),
           if (isMe == true)
             //for delete message

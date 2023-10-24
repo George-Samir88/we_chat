@@ -56,3 +56,13 @@ Future<void> downloadAndSaveAudio(
     customAlertMessage(message: 'Error: $e', backgroundColor: Colors.red);
   }
 }
+
+Future<void> updateMessage(
+    {required MessageModel messageModel, required String newMessage}) async {
+  await firestore
+      .collection('chats/${getConversationId(messageModel.toId)}/messages')
+      .doc(messageModel.sent)
+      .update({
+    'msg': newMessage,
+  });
+}
