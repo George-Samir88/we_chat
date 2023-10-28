@@ -113,14 +113,9 @@ class SenderMessageCard extends StatelessWidget {
                                 ),
                               ),
                               Padding(
-                                padding: EdgeInsets.only(
-                                    left: screenSize.width * 0.08),
-                                child: CircleAvatar(
-                                  backgroundColor: Colors.transparent,
-                                  radius: screenSize.height * 0.03,
-                                  child: Controls(
-                                    audioUrl: message.msg,
-                                  ),
+                                padding: EdgeInsets.only(left: 5),
+                                child: Controls(
+                                  audioUrl: message.msg,
                                 ),
                               ),
                             ],
@@ -204,12 +199,9 @@ class ReceiverMessageCard extends StatelessWidget {
                                 color: Colors.white,
                               ),
                             ),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  left: screenSize.width * 0.08),
-                              child: CircleAvatar(
-                                backgroundColor: Colors.transparent,
-                                radius: screenSize.height * 0.03,
+                            Expanded(
+                              child: Padding(
+                                padding: EdgeInsets.only(left: 4, right: 4),
                                 child: Controls(
                                   audioUrl: message.msg,
                                 ),
