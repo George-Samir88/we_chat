@@ -46,7 +46,11 @@ class ChatUserCard extends StatelessWidget {
                     message: 'An error occurred ' + state.error,
                     backgroundColor: Colors.red);
               } else if (state is ChatGetLastMessageSuccess) {
-                messageModel = state.messages[0];
+                if (state.messages != null) {
+                  messageModel = state.messages![0];
+                } else {
+                  messageModel = null;
+                }
               }
             },
             builder: (context, state) {
@@ -58,17 +62,17 @@ class ChatUserCard extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
                 subtitle: state is ChatGetLastMessageSuccess
-                    ? (state.messages[0].msg.isNotEmpty
-                        ? (state.messages[0].type == Type.text
+                    ? (state.messages != null
+                        ? (state.messages![0].type == Type.text
                             ? Text(
-                                state.messages[0].msg,
+                                state.messages![0].msg,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                   fontSize: 15,
                                 ),
                                 maxLines: 1,
                               )
-                            : (state.messages[0].type == Type.image
+                            : (state.messages![0].type == Type.image
                                 ? Row(
                                     children: [
                                       Icon(

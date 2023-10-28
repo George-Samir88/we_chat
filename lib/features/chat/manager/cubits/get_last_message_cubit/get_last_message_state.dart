@@ -8,7 +8,7 @@ abstract class GetLastMessageState {}
 class GetLastMessageInitial extends GetLastMessageState {}
 
 class ChatGetLastMessageSuccess extends GetLastMessageState {
-  final List<MessageModel> messages;
+  final List<MessageModel>? messages;
 
   ChatGetLastMessageSuccess({required this.messages});
 }

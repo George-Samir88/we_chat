@@ -13,18 +13,18 @@ class GetLastMessageCubit extends Cubit<GetLastMessageState> {
     emit(ChatGetLastMessageLoading());
     try {
       await firestore
-          .collection('chats/${getConversationId(chatUser.id)}/messages/')
+          .collection('chats/${getConversationId(chatUser.id)}/messages')
           .orderBy('sent', descending: true)
           .limit(1)
           .snapshots()
           .listen((snapshot) {
-        if (snapshot.docs.isEmpty) {
-          emit(ChatGetLastMessageSuccess(messages: []));
+        List<MessageModel> messageModel;
+        messageModel = snapshot.docs.map((e) {
+          return MessageModel.fromJson(e.data());
+        }).toList();
+        if (messageModel.isEmpty) {
+          emit(ChatGetLastMessageSuccess(messages: null));
         } else {
-          List<MessageModel> messageModel;
-          messageModel = snapshot.docs.map((e) {
-            return MessageModel.fromJson(e.data());
-          }).toList();
           emit(ChatGetLastMessageSuccess(messages: messageModel));
         }
       });
