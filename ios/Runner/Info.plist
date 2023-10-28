@@ -71,5 +71,9 @@
         </dict>
     <key>NSPhotoLibraryAddUsageDescription</key>
     <string>We need access to your photo library to save images or videos.</string>
+    <key>NSCameraUsageDescription</key>
+    <string>We require camera access to connect</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>We require microphone access to connect</string>
 </dict>
 </plist>
