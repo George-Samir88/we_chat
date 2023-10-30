@@ -125,7 +125,6 @@ class CustomFlexibleAppBar extends StatelessWidget {
         ),
         Expanded(
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               IconButton(
                 icon: Icon(Icons.call),
@@ -143,6 +142,9 @@ class CustomFlexibleAppBar extends StatelessWidget {
                           builder: (context) => OneToOneAudioCall(
                               userId: chatUser.id, userName: chatUser.name)));
                 },
+              ),
+              SizedBox(
+                width: 15,
               ),
               IconButton(
                 icon: Icon(Icons.video_call_rounded),

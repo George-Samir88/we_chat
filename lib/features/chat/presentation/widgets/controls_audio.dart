@@ -82,87 +82,87 @@ class _ControlsState extends State<Controls> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Padding(
-          padding: EdgeInsets.only(bottom: screenSize.height * 0.008),
-          child: StreamBuilder<PlayerState>(
-            stream: _audioPlayer.playerStateStream,
-            builder: (context, snapshot) {
-              final playerState = snapshot.data;
-              final processingState = playerState?.processingState;
-              final playing = playerState?.playing;
+        StreamBuilder<PlayerState>(
+          stream: _audioPlayer.playerStateStream,
+          builder: (context, snapshot) {
+            final playerState = snapshot.data;
+            final processingState = playerState?.processingState;
+            final playing = playerState?.playing;
 
-              if (!(playing ?? false)) {
-                return IconButton(
-                  onPressed: () {
-                    _audioPlayer.play();
-                  },
-                  iconSize: screenSize.height * 0.045,
-                  color: Colors.white,
-                  constraints: BoxConstraints(),
-                  splashColor: Colors.grey,
-                  splashRadius: screenSize.height * 0.033,
-                  icon: Icon(
-                    Icons.play_arrow,
-                    color: Colors.grey,
-                  ),
-                );
-              } else if (processingState == ProcessingState.completed) {
-                // Reset or prepare the player for the next playback
-                _audioPlayer.stop();
-                _audioPlayer.seek(Duration.zero);
-                return IconButton(
-                  onPressed: () {
-                    _audioPlayer.play();
-                  },
-                  constraints: BoxConstraints(),
-                  iconSize: screenSize.height * 0.045,
-                  color: Colors.white,
-                  splashColor: Colors.grey,
-                  splashRadius: screenSize.height * 0.033,
-                  icon: Icon(
-                    Icons.play_arrow,
-                    color: Colors.grey,
-                  ),
-                );
-              } else {
-                return IconButton(
-                  onPressed: () {
-                    _audioPlayer.pause();
-                  },
-                  constraints: BoxConstraints(),
-                  iconSize: screenSize.height * 0.045,
-                  color: Colors.white,
-                  splashColor: Colors.grey,
-                  splashRadius: screenSize.height * 0.033,
-                  icon: Icon(
-                    Icons.pause,
-                    color: Colors.grey,
-                  ),
-                );
-              }
-            },
-          ),
+            if (!(playing ?? false)) {
+              return IconButton(
+                onPressed: () {
+                  _audioPlayer.play();
+                },
+                iconSize: screenSize.height * 0.045,
+                color: Colors.white,
+                constraints: BoxConstraints(),
+                splashColor: Colors.grey,
+                splashRadius: screenSize.height * 0.033,
+                icon: Icon(
+                  Icons.play_arrow,
+                  color: Colors.grey,
+                ),
+              );
+            } else if (processingState == ProcessingState.completed) {
+              // Reset or prepare the player for the next playback
+              _audioPlayer.stop();
+              _audioPlayer.seek(Duration.zero);
+              return IconButton(
+                onPressed: () {
+                  _audioPlayer.play();
+                },
+                constraints: BoxConstraints(),
+                iconSize: screenSize.height * 0.045,
+                color: Colors.white,
+                splashColor: Colors.grey,
+                splashRadius: screenSize.height * 0.033,
+                icon: Icon(
+                  Icons.play_arrow,
+                  color: Colors.grey,
+                ),
+              );
+            } else {
+              return IconButton(
+                onPressed: () {
+                  _audioPlayer.pause();
+                },
+                constraints: BoxConstraints(),
+                iconSize: screenSize.height * 0.045,
+                color: Colors.white,
+                splashColor: Colors.grey,
+                splashRadius: screenSize.height * 0.033,
+                icon: Icon(
+                  Icons.pause,
+                  color: Colors.grey,
+                ),
+              );
+            }
+          },
         ),
         StreamBuilder<PositionData>(
           stream: _positionDataStream,
           builder: (context, snapshot) {
             final positionData = snapshot.data;
             return Expanded(
-              child: ProgressBar(
-                barHeight: screenSize.height * 0.005,
-                timeLabelLocation: TimeLabelLocation.sides,
-                baseBarColor: Colors.grey[600],
-                thumbGlowRadius: screenSize.height * 0.015,
-                thumbRadius: screenSize.height * 0.008,
-                bufferedBarColor: Colors.grey,
-                progressBarColor: Colors.blue,
-                timeLabelTextStyle: TextStyle(
-                  color: Colors.grey[600],
+              child: Padding(
+                padding: EdgeInsets.only(top: 17),
+                child: ProgressBar(
+                  barHeight: 2,
+                  timeLabelLocation: TimeLabelLocation.below,
+                  baseBarColor: Colors.grey[600],
+                  thumbGlowRadius: screenSize.height * 0.015,
+                  thumbRadius: screenSize.height * 0.008,
+                  bufferedBarColor: Colors.grey,
+                  progressBarColor: Colors.blue,
+                  timeLabelTextStyle: TextStyle(
+                    color: Colors.grey[600],
+                  ),
+                  progress: positionData?.position ?? Duration.zero,
+                  buffered: positionData?.bufferPosition ?? Duration.zero,
+                  total: positionData?.duration ?? Duration.zero,
+                  onSeek: _audioPlayer.seek,
                 ),
-                progress: positionData?.position ?? Duration.zero,
-                buffered: positionData?.bufferPosition ?? Duration.zero,
-                total: positionData?.duration ?? Duration.zero,
-                onSeek: _audioPlayer.seek,
               ),
             );
           },
