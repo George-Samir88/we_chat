@@ -112,10 +112,12 @@ class SenderMessageCard extends StatelessWidget {
                                   color: Colors.white,
                                 ),
                               ),
-                              Padding(
-                                padding: EdgeInsets.only(left: 5),
-                                child: Controls(
-                                  audioUrl: message.msg,
+                              Expanded(
+                                child: Padding(
+                                  padding: EdgeInsets.only(left: 4, right: 4),
+                                  child: Controls(
+                                    audioUrl: message.msg,
+                                  ),
                                 ),
                               ),
                             ],

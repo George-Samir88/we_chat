@@ -8,14 +8,11 @@ import 'package:rxdart/rxdart.dart';
 import '../../../../core/global_var.dart';
 
 class PositionData {
-  final Duration position;
-  final Duration bufferPosition;
-  final Duration duration;
+  final Duration? position;
+  final Duration? bufferPosition;
+  final Duration? duration;
 
-  PositionData(
-      {required this.position,
-      required this.bufferPosition,
-      required this.duration});
+  PositionData({this.position, this.bufferPosition, this.duration});
 }
 
 class Controls extends StatefulWidget {
@@ -34,13 +31,13 @@ class _ControlsState extends State<Controls> {
   late AudioPlayer _audioPlayer;
 
   Stream<PositionData> get _positionDataStream =>
-      Rx.combineLatest3<Duration, Duration, Duration?, PositionData>(
-          _audioPlayer.positionStream,
+      Rx.combineLatest3<Duration?, Duration?, Duration?, PositionData>(
+          _audioPlayer.positionStream ,
           _audioPlayer.bufferedPositionStream,
           _audioPlayer.durationStream,
           (position, bufferPosition, duration) => PositionData(
-              position: position,
-              bufferPosition: bufferPosition,
+              position: position ?? Duration.zero,
+              bufferPosition: bufferPosition ?? Duration.zero,
               duration: duration ?? Duration.zero));
 
   void _initializeAudioPlayer() {
@@ -159,8 +156,7 @@ class _ControlsState extends State<Controls> {
                 bufferedBarColor: Colors.grey,
                 progressBarColor: Colors.blue,
                 timeLabelTextStyle: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.w600,
+                  color: Colors.grey[600],
                 ),
                 progress: positionData?.position ?? Duration.zero,
                 buffered: positionData?.bufferPosition ?? Duration.zero,
