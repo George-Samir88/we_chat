@@ -32,7 +32,7 @@ class _ControlsState extends State<Controls> {
 
   Stream<PositionData> get _positionDataStream =>
       Rx.combineLatest3<Duration?, Duration?, Duration?, PositionData>(
-          _audioPlayer.positionStream ,
+          _audioPlayer.positionStream,
           _audioPlayer.bufferedPositionStream,
           _audioPlayer.durationStream,
           (position, bufferPosition, duration) => PositionData(
