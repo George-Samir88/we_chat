@@ -152,6 +152,7 @@ class _ControlsState extends State<Controls> {
                 barHeight: screenSize.height * 0.005,
                 timeLabelLocation: TimeLabelLocation.sides,
                 baseBarColor: Colors.grey[600],
+                thumbGlowRadius: screenSize.height * 0.015,
                 thumbRadius: screenSize.height * 0.008,
                 bufferedBarColor: Colors.grey,
                 progressBarColor: Colors.blue,
