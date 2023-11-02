@@ -3,10 +3,13 @@ import 'dart:io';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
 
-EmojiPicker pickEmoji(
-    {required TextEditingController textEditingController}) {
+EmojiPicker pickEmoji({
+  required TextEditingController textEditingController,
+  required void Function(Category?, Emoji) onEmojiSelect,
+}) {
   return EmojiPicker(
     textEditingController: textEditingController,
+    onEmojiSelected: onEmojiSelect,
     // pass here the same [TextEditingController] that is connected to your input field, usually a [TextFormField]
     config: Config(
       columns: 8,

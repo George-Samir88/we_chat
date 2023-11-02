@@ -29,6 +29,7 @@ class SendMessageSection extends StatefulWidget {
 class _SendMessageSectionState extends State<SendMessageSection> {
   final textEditingController = TextEditingController();
   bool isPickingEmoji = false;
+  bool autoFocus = false;
 
   @override
   Widget build(BuildContext context) {
@@ -137,6 +138,7 @@ class _SendMessageSectionState extends State<SendMessageSection> {
                                 child: TextField(
                                   minLines: 1,
                                   maxLines: 5,
+                                  autofocus: autoFocus,
                                   controller: textEditingController,
                                   keyboardType: TextInputType.multiline,
                                   style: TextStyle(
@@ -159,6 +161,7 @@ class _SendMessageSectionState extends State<SendMessageSection> {
                                       if (blocHelper.showSendButton) {
                                         //showSendButton = false;
                                         blocHelper.toggleSendAndRecordButton();
+                                        autoFocus =false;
                                       }
                                     }
                                   },
@@ -233,6 +236,7 @@ class _SendMessageSectionState extends State<SendMessageSection> {
                                             type: Type.text)
                                         .then((value) {
                                       textEditingController.clear();
+                                      autoFocus = false;
                                     });
                                     widget._scrollController.animateTo(0,
                                         duration:
@@ -271,8 +275,16 @@ class _SendMessageSectionState extends State<SendMessageSection> {
                 if (isPickingEmoji)
                   SizedBox(
                     height: screenSize.height * 0.35,
-                    child:
-                        pickEmoji(textEditingController: textEditingController),
+                    child: pickEmoji(
+                      textEditingController: textEditingController,
+                      onEmojiSelect: (Category, Emoji) {
+                        while (!blocHelper.showSendButton) {
+                          blocHelper.showSendButton = true;
+                          autoFocus = true;
+                          setState(() {});
+                        }
+                      },
+                    ),
                   ),
               ],
             );
