@@ -12,6 +12,8 @@ class CustomMaterialButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialButton(
       onPressed: onPressed,
+      minWidth: 10,
+      padding: EdgeInsets.zero,
       child: Icon(
         icon,
         size: screenSize.height * 0.030,

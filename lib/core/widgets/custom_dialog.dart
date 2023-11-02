@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:we_chat/core/widgets/custom_material_button.dart';
 import 'package:we_chat/features/chat/presentation/chat_view.dart';
+import 'package:we_chat/features/chat/presentation/widgets/one_to_one_audio_call.dart';
+import 'package:we_chat/features/chat/presentation/widgets/one_to_one_video_call.dart';
 import 'package:we_chat/features/chat_user_profile/presentation/chat_user_profile.dart';
 import 'package:we_chat/features/home/manager/models/user_model.dart';
 
@@ -75,6 +77,7 @@ class CustomDialog extends StatelessWidget {
                 height: screenSize.height * 0.05,
                 color: Color(0xff121B22),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     CustomMaterialButton(
                       icon: Icons.message_rounded,
@@ -90,7 +93,27 @@ class CustomDialog extends StatelessWidget {
                     ),
                     CustomMaterialButton(
                       icon: Icons.add_call,
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pop(context);
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => OneToOneAudioCall(
+                                  userId: chatUser.id, userName: chatUser.name),
+                            ));
+                      },
+                    ),
+                    CustomMaterialButton(
+                      icon: Icons.video_call_rounded,
+                      onPressed: () {
+                        Navigator.pop(context);
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => OneToOneVideoCall(
+                                  userId: chatUser.id, userName: chatUser.name),
+                            ));
+                      },
                     ),
                     CustomMaterialButton(
                       icon: Icons.info_outline,
